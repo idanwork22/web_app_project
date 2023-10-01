@@ -1,32 +1,32 @@
 import userService from "../services/userService";
 
-const getAllUsers = (req, res) => {
-  const data = userService.getAllUsers();
+const getAllUsers = async (req, res) => {
+  const data = await userService.getAllUsers();
   res.json(data);
 };
 
-const getUserById = (req, res) => {
+const getUserById = async (req, res) => {
   const id = req.params.id;
-  const data = userService.getUserById(id);
-  res.json(data ? data : 'NotFound');
+  const data = await userService.getUserById(id);
+  res.json(data);
 };
 
-const createUser = (req, res) => {
+const createUser = async (req, res) => {
   const name = req.body.name;
-  const newUser = userService.createUser({name});
+  const newUser = await userService.createUser({name});
   res.json(newUser);
 };
 
-const updateUser = (req, res) => {
+const updateUser = async (req, res) => {
   const id = req.params.id;
   const data = req.body;
-  const updatedUser = userService.updateUser(id, data);
+  const updatedUser = await userService.updateUser(id, data);
   res.json(updatedUser);
 };
 
-const deleteUser = (req, res) => {
+const deleteUser = async (req, res) => {
   const id = req.params.id;
-  const deletedUser = userService.deleteUser(id);
+  const deletedUser = await userService.deleteUser(id);
   res.json(deletedUser);
 };
 
