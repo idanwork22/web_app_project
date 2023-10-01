@@ -11,9 +11,9 @@ const getUserById = async (req, res) => {
   res.json(data);
 };
 
-const createUser = (req, res) => {
+const createUser = async (req, res) => {
   const name = req.body.name;
-  const newUser = userService.createUser({name});
+  const newUser = await userService.createUser({name});
   res.json(newUser);
 };
 
@@ -24,9 +24,9 @@ const updateUser = (req, res) => {
   res.json(updatedUser);
 };
 
-const deleteUser = (req, res) => {
+const deleteUser = async (req, res) => {
   const id = req.params.id;
-  const deletedUser = userService.deleteUser(id);
+  const deletedUser = await userService.deleteUser(id);
   res.json(deletedUser);
 };
 

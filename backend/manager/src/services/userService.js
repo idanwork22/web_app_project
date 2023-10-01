@@ -19,11 +19,13 @@ const getUserById = async (id) => {
   }
 }
 
-const createUser = (userData) => {
-  const id = users.length + 1;
-  const newUser = { id, ...userData };
-  newUser.name && users.push(newUser);
-  return newUser.name ? newUser : `Plesae enter "name" in body`;
+const createUser = async (userData) => {
+  try {
+    const response = await axios.post(`${config.dataGate.url}/users`, userData)
+    return response.data;
+  } catch (error) {
+    return error;
+  }
 };
 
 const updateUser = (id, userData) => {
@@ -38,16 +40,13 @@ const updateUser = (id, userData) => {
   return null;
 };
 
-const deleteUser = (id) => {
-  id = parseInt(id);
-  const userIndex = users.findIndex((user) => user.id === id);
-
-  if (userIndex !== -1) {
-    const deletedUser = users.splice(userIndex, 1);
-    return deletedUser[0];
+const deleteUser = async (id) => {
+  try {
+    const response = await axios.delete(`${config.dataGate.url}/users/${id}`)
+    return response.data;
+  } catch (error) {
+    return error;
   }
-
-  return null;
 };
 
 module.exports = {
