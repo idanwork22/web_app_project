@@ -1,14 +1,23 @@
-const users = [
-  { id: 1, name: "Yoav"},
-  { id: 2, name: "Idan"},
-  { id: 3, name: "Omer"},
-  { id: 4, name: "Raz"},
-];
+import config from "../config/config";
+import axios from "axios";
 
-const getAllUsers = () => users;
+const getAllUsers = async () =>{
+  try {
+    const response = await axios.get(`${config.dataGate.url}/users`);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+} 
 
-const getUserById = (id) => 
-users.find((user) => user.id === parseInt(id));
+const getUserById = async (id) => {
+  try {
+    const response = await axios.get(`${config.dataGate.url}/users/${id}`);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+}
 
 const createUser = (userData) => {
   const id = users.length + 1;

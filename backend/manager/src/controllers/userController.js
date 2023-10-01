@@ -1,14 +1,14 @@
 import userService from "../services/userService";
 
-const getAllUsers = (req, res) => {
-  const data = userService.getAllUsers();
+const getAllUsers = async (req, res) => {
+  const data = await userService.getAllUsers();
   res.json(data);
 };
 
-const getUserById = (req, res) => {
+const getUserById = async (req, res) => {
   const id = req.params.id;
-  const data = userService.getUserById(id);
-  res.json(data ? data : 'NotFound');
+  const data = await userService.getUserById(id);
+  res.json(data);
 };
 
 const createUser = (req, res) => {
