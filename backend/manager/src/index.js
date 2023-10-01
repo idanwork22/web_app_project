@@ -1,6 +1,9 @@
 import express from 'express';
 import userRoutes from './routes/userRoutes';
+import config from './config/config';
 
+
+console.log(config)
 const app = express();
 app.use(express.json()); // Middleware for parsing JSON
 app.use(express.urlencoded({ extended: true }));
@@ -14,8 +17,6 @@ app.use((req, res, next) => {
   next();
 });
 
-const PORT = process.env.PORT || 8001; // Check if there environment variables
-
-app.listen(PORT, () => {
-  console.log(`MANAGER is running on port ${PORT}`);
+app.listen(config.manager.port, () => {
+  console.log(`MANAGER is running on port ${config.manager.port}`);
 });
