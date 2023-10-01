@@ -17,10 +17,10 @@ const createUser = async (req, res) => {
   res.json(newUser);
 };
 
-const updateUser = (req, res) => {
+const updateUser = async (req, res) => {
   const id = req.params.id;
   const data = req.body;
-  const updatedUser = userService.updateUser(id, data);
+  const updatedUser = await userService.updateUser(id, data);
   res.json(updatedUser);
 };
 

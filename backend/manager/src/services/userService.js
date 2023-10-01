@@ -28,16 +28,13 @@ const createUser = async (userData) => {
   }
 };
 
-const updateUser = (id, userData) => {
-  id = parseInt(id);
-  const userIndex = users.findIndex((user) => user.id === id);
-
-  if (userIndex !== -1) {
-    users[userIndex] = { ...users[userIndex], ...userData };
-    return users[userIndex];
+const updateUser = async (id, userData) => {
+  try {
+    const response = await axios.put(`${config.dataGate.url}/users/${id}`, userData)
+    return response.data;
+  } catch (error) {
+    return error;
   }
-
-  return null;
 };
 
 const deleteUser = async (id) => {
