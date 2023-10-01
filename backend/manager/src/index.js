@@ -12,8 +12,8 @@ app.use((req, res, next) => {
   next();
 });
 
-const PORT = process.env.PORT || 8080; // Check if there environment variables
+const PORT = process.env.PORT || 8001; // Check if there environment variables
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`MANAGER is running on port ${PORT}`);
 });
