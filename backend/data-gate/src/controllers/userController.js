@@ -13,9 +13,10 @@ const getUserById = (req, res) => {
 
 const createUser = (req, res) => {
   const userData = {
+    username: req.body.username,
     user_first_name: req.body.user_first_name,
     user_last_name: req.body.user_last_name,
-    user_password: req.body.user_password,
+    password: req.body.password,
     user_email_address: req.body.user_email_address,
     user_phone_number: req.body.user_phone_number,
     user_date_of_birth: req.body.user_date_of_birth,
@@ -35,9 +36,10 @@ const createUser = (req, res) => {
 const updateUser = (req, res) => {
   const id = req.params.id;
   const userData = {
+    username: req.body.username,
     user_first_name: req.body.user_first_name,
     user_last_name: req.body.user_last_name,
-    user_password: req.body.user_password,
+    password: req.body.password,
     user_email_address: req.body.user_email_address,
     user_phone_number: req.body.user_phone_number,
     user_date_of_birth: req.body.user_date_of_birth,
