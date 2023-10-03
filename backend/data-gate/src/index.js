@@ -1,5 +1,6 @@
 import express from 'express';
 import userRoutes from './routes/userRoutes';
+import config from './config/config';
 
 const app = express();
 app.use(express.json()); // Middleware for parsing JSON
@@ -14,8 +15,7 @@ app.use((req, res, next) => {
   next();
 });
 
-const PORT = process.env.PORT || 8004; // Check if there environment variables
 
-app.listen(PORT, () => {
-  console.log(`DATA GATE is running on port ${PORT}`);
+app.listen(config.dataGate.port, () => {
+  console.log(`DATA GATE is running on port ${config.dataGate.port}`);
 });
