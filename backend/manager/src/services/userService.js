@@ -37,6 +37,8 @@ const updateUser = async (id, userData) => {
   }
 };
 
+// TODO: delete user from user's collection based on user_id ,
+// TODO: also deleting each post he creates, every chat he connect to and every group he member of
 const deleteUser = async (id) => {
   try {
     const response = await axios.delete(`${config.dataGate.url}/users/${id}`)
