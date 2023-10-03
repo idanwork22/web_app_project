@@ -13,8 +13,8 @@ users.find((user) => user.id === parseInt(id));
 const createUser = (userData) => {
   const id = users.length + 1;
   const newUser = { id, ...userData };
-  newUser.name && users.push(newUser);
-  return newUser.name ? newUser : `Plesae enter "name" in body`;
+  users.push(newUser);
+  return newUser;
 };
 
 const updateUser = (id, userData) => {

@@ -12,9 +12,24 @@ const getUserById = (req, res) => {
 };
 
 const createUser = (req, res) => {
-  const name = req.body.name;
-  const newUser = userService.createUser({name});
-  res.json(newUser);
+  const userData = {
+    user_first_name: req.body.user_first_name,
+    user_last_name: req.body.user_last_name,
+    user_password: req.body.user_password,
+    user_email_address: req.body.user_email_address,
+    user_phone_number: req.body.user_phone_number,
+    user_date_of_birth: req.body.user_date_of_birth,
+    user_gender: req.body.user_gender,
+    user_current_work: req.body.user_current_work,
+    user_profile_image: req.body.user_profile_image
+  };
+
+  const isAllDataAvailable = Object.values(userData).every(Boolean);
+  res.json(
+    isAllDataAvailable
+      ? userService.createUser(userData)
+      : { success: false, message: 'Incomplete user data provided.' }
+  ); 
 };
 
 const updateUser = (req, res) => {
