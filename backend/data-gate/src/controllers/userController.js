@@ -8,7 +8,7 @@ const getAllUsers = (req, res) => {
 const getUserById = (req, res) => {
   const id = req.params.id;
   const data = userService.getUserById(id);
-  res.json(data ? data : 'NotFound');
+  res.json(data ? data : { success: false, message: 'NotFound' });
 };
 
 const createUser = (req, res) => {

@@ -7,8 +7,7 @@ const users = [
 
 const getAllUsers = () => users;
 
-const getUserById = (id) => 
-users.find((user) => user.id === parseInt(id));
+const getUserById = (id) => users.find((user) => user.id === parseInt(id));
 
 const createUser = (userData) => {
   const id = users.length + 1;
@@ -38,7 +37,7 @@ const deleteUser = (id) => {
     return deletedUser[0];
   }
 
-  return null;
+  return { success: false, message: 'User not found.' };
 };
 
 // return True / False
