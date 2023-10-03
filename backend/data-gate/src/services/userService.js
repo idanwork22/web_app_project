@@ -26,7 +26,7 @@ const updateUser = (id, userData) => {
     return users[userIndex];
   }
 
-  return null;
+  return { success: false, message: 'User not found.' };
 };
 
 const deleteUser = (id) => {
