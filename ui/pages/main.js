@@ -24,6 +24,16 @@ if (window.location.pathname === "/") {
 
 
 
+//Change groups
+var groupButtonsSelectors = document.querySelectorAll(".groupButtonSelect");
+var selectedGroupElement = document.querySelector(".groupName");
+
+groupButtonsSelectors.forEach(function(button) {
+  button.addEventListener("click", ()=>{
+    selectedGroupElement.innerHTML =`${button.innerText} &#8226; Last Activity`
+  });
+});
+
 
 
 
