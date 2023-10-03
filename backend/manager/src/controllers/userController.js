@@ -6,29 +6,29 @@ const getAllUsers = async (req, res) => {
 };
 
 const getUserById = async (req, res) => {
-  const id = req.params.id;
-  const data = await userService.getUserById(id);
+  const data = await userService.getUserById(req.params.id);
   res.json(data);
 };
 
 const createUser = async (req, res) => {
-  const name = req.body.name;
-  const newUser = await userService.createUser({name});
+  const newUser = await userService.createUser(req.body);
   res.json(newUser);
 };
 
 const updateUser = async (req, res) => {
-  const id = req.params.id;
-  const data = req.body;
-  const updatedUser = await userService.updateUser(id, data);
+  const updatedUser = await userService.updateUser(req.params.id, req.body);
   res.json(updatedUser);
 };
 
 const deleteUser = async (req, res) => {
-  const id = req.params.id;
-  const deletedUser = await userService.deleteUser(id);
+  const deletedUser = await userService.deleteUser(req.params.id);
   res.json(deletedUser);
 };
+
+const isUserExist = async (req, res) => {
+  const loginResponse = await userService.isUserExist(req.body);
+  res.json(loginResponse);
+}
 
 module.exports = {
   getAllUsers,
@@ -36,4 +36,5 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
+  isUserExist,
 };

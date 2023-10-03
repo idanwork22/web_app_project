@@ -1,20 +1,19 @@
 const users = [
-  { id: 1, name: "Yoav"},
-  { id: 2, name: "Idan"},
-  { id: 3, name: "Omer"},
-  { id: 4, name: "Raz"},
+  { id: 1, username: "Yoav", password: "123"},
+  { id: 2, username: "Idan", password: "123"},
+  { id: 3, username: "Omer", password: "123"},
+  { id: 4, username: "Raz", password: "123"},
 ];
 
 const getAllUsers = () => users;
 
-const getUserById = (id) => 
-users.find((user) => user.id === parseInt(id));
+const getUserById = (id) => users.find((user) => user.id === parseInt(id));
 
 const createUser = (userData) => {
   const id = users.length + 1;
   const newUser = { id, ...userData };
-  newUser.name && users.push(newUser);
-  return newUser.name ? newUser : `Plesae enter "name" in body`;
+  users.push(newUser);
+  return newUser;
 };
 
 const updateUser = (id, userData) => {
@@ -26,7 +25,7 @@ const updateUser = (id, userData) => {
     return users[userIndex];
   }
 
-  return null;
+  return { success: false, message: 'User not found.' };
 };
 
 const deleteUser = (id) => {
@@ -38,8 +37,11 @@ const deleteUser = (id) => {
     return deletedUser[0];
   }
 
-  return null;
+  return { success: false, message: 'User not found.' };
 };
+
+// return True / False
+const isUserExist = (username, password) => !!users.find((user) => user.username === username && user.password === password);
 
 module.exports = {
   getAllUsers,
@@ -47,4 +49,5 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
+  isUserExist,
 };
