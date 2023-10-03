@@ -1,8 +1,8 @@
 const users = [
-  { id: 1, name: "Yoav"},
-  { id: 2, name: "Idan"},
-  { id: 3, name: "Omer"},
-  { id: 4, name: "Raz"},
+  { id: 1, username: "Yoav", password: "123"},
+  { id: 2, username: "Idan", password: "123"},
+  { id: 3, username: "Omer", password: "123"},
+  { id: 4, username: "Raz", password: "123"},
 ];
 
 const getAllUsers = () => users;
@@ -41,10 +41,14 @@ const deleteUser = (id) => {
   return null;
 };
 
+// return True / False
+const isUserExist = (username, password) => !!users.find((user) => user.username === username && user.password === password);
+
 module.exports = {
   getAllUsers,
   getUserById,
   createUser,
   updateUser,
   deleteUser,
+  isUserExist,
 };

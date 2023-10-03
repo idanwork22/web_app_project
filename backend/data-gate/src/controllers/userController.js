@@ -30,10 +30,18 @@ const deleteUser = (req, res) => {
   res.json(deletedUser);
 };
 
+const isUserExist = (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  const deletedUser = userService.isUserExist(username, password);
+  res.json(deletedUser);
+}
+
 module.exports = {
   getAllUsers,
   getUserById,
   createUser,
   updateUser,
   deleteUser,
+  isUserExist,
 };
