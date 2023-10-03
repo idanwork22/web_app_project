@@ -46,10 +46,21 @@ const deleteUser = async (id) => {
   }
 };
 
+const isUserExist = async (userData) => {
+  try {
+    const response = await axios.post(`${config.dataGate.url}/users/login`, userData)
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+}
+
+
 module.exports = {
   getAllUsers,
   getUserById,
   createUser,
   updateUser,
   deleteUser,
+  isUserExist,
 };

@@ -3,7 +3,6 @@ import userRoutes from './routes/userRoutes';
 import config from './config/config';
 
 
-console.log(config)
 const app = express();
 app.use(express.json()); // Middleware for parsing JSON
 app.use(express.urlencoded({ extended: true }));
