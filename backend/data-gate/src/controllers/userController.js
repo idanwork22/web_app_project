@@ -1,7 +1,7 @@
 import userService from "../services/userService";
 
-const getAllUsers = (req, res) => {
-  const data = userService.getAllUsers();
+const getAllUsers = (db) => async (req, res) => {
+  const data = await userService.getAllUsers(db);
   res.json(data);
 };
 

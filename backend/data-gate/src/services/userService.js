@@ -1,11 +1,12 @@
-const users = [
-  { id: 1, username: "Yoav", password: "123"},
-  { id: 2, username: "Idan", password: "123"},
-  { id: 3, username: "Omer", password: "123"},
-  { id: 4, username: "Raz", password: "123"},
-];
 
-const getAllUsers = () => users;
+const getAllUsers = async (db) => {
+  try {
+    const result = await db.collection("users").find({}).toArray();
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
 
 const getUserById = (id) => users.find((user) => user.id === parseInt(id));
 
@@ -25,7 +26,7 @@ const updateUser = (id, userData) => {
     return users[userIndex];
   }
 
-  return { success: false, message: 'User not found.' };
+  return { success: false, message: "User not found." };
 };
 
 const deleteUser = (id) => {
@@ -37,11 +38,14 @@ const deleteUser = (id) => {
     return deletedUser[0];
   }
 
-  return { success: false, message: 'User not found.' };
+  return { success: false, message: "User not found." };
 };
 
 // return True / False
-const isUserExist = (username, password) => !!users.find((user) => user.username === username && user.password === password);
+const isUserExist = (username, password) =>
+  !!users.find(
+    (user) => user.username === username && user.password === password
+  );
 
 const getUserIdByUsername = (username) => {
   const userIndex = users.findIndex((user) => user.username === username);
@@ -49,8 +53,8 @@ const getUserIdByUsername = (username) => {
     return users[userIndex].id;
   }
 
-  return { success: false, message: 'User not found.' };
-}
+  return { success: false, message: "User not found." };
+};
 
 module.exports = {
   getAllUsers,
@@ -59,5 +63,5 @@ module.exports = {
   updateUser,
   deleteUser,
   isUserExist,
-  getUserIdByUsername
+  getUserIdByUsername,
 };
