@@ -21,14 +21,14 @@ const createUser = (db) => async (req, res) => {
     user_phone_number: req.body.user_phone_number,
     user_date_of_birth: req.body.user_date_of_birth,
     user_gender: req.body.user_gender,
-    user_current_work: req.body.user_current_work,
+    current_work_place: req.body.current_work_place,
     user_profile_image: req.body.user_profile_image,
   };
 
   const isAllDataAvailable = Object.values(userData).every(Boolean);
   res.json(
     isAllDataAvailable
-      ? userService.createUser(userData)
+      ? await userService.createUser(db, userData)
       : { success: false, message: "Incomplete user data provided." }
   );
 };

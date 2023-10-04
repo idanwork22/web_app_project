@@ -1,32 +1,56 @@
 import { ObjectId } from "mongodb";
+import { getTimestamp } from "../utils/getTimeStamp";
 
 const getAllUsers = async (db) => {
   try {
     const result = await db.collection("users").find({}).toArray();
-    return result;
+    return { success: true, result: result };
   } catch (error) {
-    return { success: false, message: error.message };
+    return { success: false, result: error.message };
   }
 };
 
 const getUserById = async (db, id) => {
   try {
-    const result = await db.collection("users").findOne({ _id: new ObjectId(id) });
-    return result || { success: false, message: "User not found." };
+    const result = await db
+      .collection("users")
+      .findOne({ _id: new ObjectId(id) });
+    return result
+      ? { success: true, result: result }
+      : { success: false, result: "User not found." };
   } catch (error) {
-    if (error.message === "input must be a 24 character hex string, 12 byte Uint8Array, or an integer") {
-      return { success: false, message: "Invalid ID format" };
+    if (
+      error.message ===
+      "input must be a 24 character hex string, 12 byte Uint8Array, or an integer"
+    ) {
+      return { success: false, result: "Invalid ID format" };
     } else {
-      return { success: false, message: error.message }; // Handle other errors
+      return { success: false, result: error.message }; // Handle other errors
     }
   }
 };
 
-const createUser = (userData) => {
-  const id = users.length + 1;
-  const newUser = { id, ...userData };
-  users.push(newUser);
-  return newUser;
+const createUser = async (db, userData) => {
+  try {
+    userData = {
+      ...userData,
+      user_creation_time: new Date(getTimestamp()),
+      friends: [],
+      is_online: true,
+    };
+    const checkUsername = await getUserIdByUsername(db, userData.username);
+    if (
+      "result" in checkUsername &&
+      checkUsername.result === "User not found."
+    ) {
+      const result = await db.collection("users").insertOne(userData);
+      return { success: true, result: result };
+    } else {
+      return { success: false, result: "username already exists" };
+    }
+  } catch (error) {
+    return { success: false, result: error.message };
+  }
 };
 
 const updateUser = (id, userData) => {
@@ -35,10 +59,10 @@ const updateUser = (id, userData) => {
 
   if (userIndex !== -1) {
     users[userIndex] = { ...users[userIndex], ...userData };
-    return users[userIndex];
+    return { success: true, result: users[userIndex] };
   }
 
-  return { success: false, message: "User not found." };
+  return { success: false, result: "User not found." };
 };
 
 const deleteUser = (id) => {
@@ -47,24 +71,30 @@ const deleteUser = (id) => {
 
   if (userIndex !== -1) {
     const deletedUser = users.splice(userIndex, 1);
-    return deletedUser[0];
+    return { success: true, result: deletedUser[0] };
   }
 
-  return { success: false, message: "User not found." };
+  return { success: false, result: "User not found." };
 };
 
 // return True / False
-const isUserExist = (username, password) =>
-  !!users.find(
-    (user) => user.username === username && user.password === password
-  );
+const isUserExist = (username, password) => {
+  return {
+    success: true,
+    result: !!users.find(
+      (user) => user.username === username && user.password === password
+    ),
+  };
+};
 
 const getUserIdByUsername = async (db, username) => {
   try {
     const result = await db.collection("users").findOne({ username: username });
-    return result || { success: false, message: "User not found." };
+    return result
+      ? { success: true, result: result }
+      : { success: false, result: "User not found." };
   } catch (error) {
-      return { success: false, message: error.message }; // Handle other errors
+    return { success: false, result: error.message };
   }
 };
 
