@@ -43,6 +43,16 @@ const deleteUser = (id) => {
 // return True / False
 const isUserExist = (username, password) => !!users.find((user) => user.username === username && user.password === password);
 
+const getUserIdByUsername = (username) => {
+  const userIndex = users.findIndex((user) => user.username === username);
+  console.log(userIndex)
+  if (userIndex !== -1) {
+    return users[userIndex].id;
+  }
+
+  return { success: false, message: 'User not found.' };
+}
+
 module.exports = {
   getAllUsers,
   getUserById,
@@ -50,4 +60,5 @@ module.exports = {
   updateUser,
   deleteUser,
   isUserExist,
+  getUserIdByUsername
 };

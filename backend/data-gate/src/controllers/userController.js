@@ -68,6 +68,12 @@ const isUserExist = (req, res) => {
   res.json(deletedUser);
 }
 
+const getUserIdByUsername = (req, res) => {
+  const username = req.params.username;
+  const userId = userService.getUserIdByUsername(username);
+  res.json(userId);
+}
+
 module.exports = {
   getAllUsers,
   getUserById,
@@ -75,4 +81,5 @@ module.exports = {
   updateUser,
   deleteUser,
   isUserExist,
+  getUserIdByUsername,
 };

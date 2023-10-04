@@ -19,6 +19,7 @@ const getUserById = async (id) => {
   }
 }
 
+// TODO: add user image to s3
 const createUser = async (userData) => {
   try {
     const response = await axios.post(`${config.dataGate.url}/users`, userData)
@@ -28,6 +29,8 @@ const createUser = async (userData) => {
   }
 };
 
+
+// TODO: if we change user image need to upload to s3
 const updateUser = async (id, userData) => {
   try {
     const response = await axios.put(`${config.dataGate.url}/users/${id}`, userData)
