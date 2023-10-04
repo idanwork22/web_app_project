@@ -23,7 +23,7 @@ if (window.location.pathname === "/") {
 }
 
 
-const getCurrentDateTime = async () => {
+const getCurrentDateTime = () => {
   const months = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
@@ -54,6 +54,7 @@ createNewPostButton.addEventListener("click", () => {
 const createNewPost = (text) => {
   var timeline = document.querySelector(".timeline");
   var newPost = document.createElement("div");
+  console.log(getCurrentDateTime())
 
   var author = "John";
   var img = "https://source.unsplash.com/random/12";
