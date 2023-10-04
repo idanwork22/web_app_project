@@ -8,7 +8,6 @@ editProfileUpdateButton.addEventListener("click", () => {
 });
 
 var changeProfile = () => {
-    console.log("asd")
     var firstName = editProfileForm[0].value
     var lastName = editProfileForm[1].value
     var email = editProfileForm[2].value
