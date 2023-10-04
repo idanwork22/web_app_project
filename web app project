@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2023-10-04T06:54:43.738Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.7.5 Chrome/114.0.5735.289 Electron/25.8.1 Safari/537.36" etag="viUp8moTWyPgfaXNxwKC" version="21.7.5" type="device">
+<mxfile host="Electron" modified="2023-10-04T07:08:16.913Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.7.5 Chrome/114.0.5735.289 Electron/25.8.1 Safari/537.36" etag="g9wcGn1_NzNMqPjyInxQ" version="21.7.5" type="device">
   <diagram name="Page-1" id="9L2mnkNec12nun_PjxLG">
-    <mxGraphModel dx="3428" dy="8031" grid="1" gridSize="10" guides="0" tooltips="1" connect="1" arrows="0" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="2876" dy="7724" grid="1" gridSize="10" guides="0" tooltips="1" connect="1" arrows="0" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -135,6 +135,9 @@
         </mxCell>
         <mxCell id="WeA4GNYqaDC1LRRpXu8a-9" value="&lt;h1&gt;POST - start_chat&lt;/h1&gt;&lt;div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;- start new chat, click on friend and send him message:&lt;/div&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;the chat will create new chat document&amp;nbsp;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;______________________________________________&amp;nbsp;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;def (first_user_id, second_user_id)&lt;/div&gt;&lt;div&gt;return chat_id&lt;/div&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;opacity=50;strokeWidth=4;fontSize=30;" parent="1" vertex="1">
           <mxGeometry x="1320" y="-5390" width="1080" height="510" as="geometry" />
+        </mxCell>
+        <mxCell id="3biNN_TnJrrAybcKZK7a-1" value="&lt;h1&gt;UPDATE - update_friend&lt;/h1&gt;&lt;div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;- update friend on the user&#39;s document friends list&lt;br&gt;if the user dont exist in is friends - add him to his array and his new friend array - else delete him&lt;/div&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;_____________________________________________&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;def (user_id, second_user_id) &amp;gt;&lt;br&gt;return &quot;added friend&quot; / &quot;remove friend&quot;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;opacity=50;strokeWidth=4;fontSize=30;" vertex="1" parent="1">
+          <mxGeometry x="-230" y="-1800" width="900" height="500" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
