@@ -1,14 +1,18 @@
 import express from "express";
 import userController from "../controllers/userController";
 
-const router = express.Router();
+const userRoutes = (db) => {
+  const router = express.Router();
 
-router.get("/", userController.getAllUsers);
-router.get("/:id", userController.getUserById);
-router.get("/username/:username", userController.getUserIdByUsername);
-router.post("/", userController.createUser);
-router.post("/login", userController.isUserExist);
-router.put("/:id", userController.updateUser);
-router.delete("/:id", userController.deleteUser);
+  router.get("/", userController.getAllUsers(db));
+  router.get("/:id", userController.getUserById);
+  router.get("/username/:username", userController.getUserIdByUsername);
+  router.post("/", userController.createUser);
+  router.post("/login", userController.isUserExist);
+  router.put("/:id", userController.updateUser);
+  router.delete("/:id", userController.deleteUser);
 
-export default router;
+  return router;
+};
+
+export default userRoutes;
