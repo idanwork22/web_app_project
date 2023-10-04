@@ -860,7 +860,7 @@
             <div class="col-12 col-lg-6 pb-5">
                 <div class="m-2 flex-row" style="padding-left: 200px;">
                     <button type="button" class="btn px-4" disabled>
-                        <p class="m-0 fw-bold">John JHon</p>
+                        <p class="profileName m-0 fw-bold">John JHon</p>
                     </button>
                     <button type="button" class="btn px-4" data-bs-toggle="modal" data-bs-target="#updateProfileModal">
                         <p class="m-0 fw-bold">Edit profile<i class="p-2 bi bi-pencil"></i></p>
@@ -884,7 +884,7 @@
                         </div>
                         <!-- body -->
                         <div class="modal-body">
-                            <form>
+                            <form class="editProfileForm">
                                 <!-- names -->
                                 <div class="row">
                                     <div class="col">
@@ -900,7 +900,7 @@
                                 
                                 <!-- btn -->
                                 <div class="text-center mt-3">
-                                    <button type="button" class="btn btn-success btn-lg" data-bs-dismiss="modal">Update</button>
+                                    <button type="button" class="editProfileUpdateButton btn btn-success btn-lg" data-bs-dismiss="modal">Update</button>
                                 </div>
                             </form>
                         </div>
@@ -1266,7 +1266,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="./main.js"></script>
+    <script src="./profile.js"></script>
 </body>
 
 </html>
