@@ -1,0 +1,33 @@
+# Node.js related
+/node_modules
+
+# Build and runtime artifacts
+/build
+/dist
+
+# Environment variables
+.env
+
+# Logs
+/logs
+
+# Editor/IDE specific files
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+
+# npm debugging log
+npm-debug.log
+
+# Yarn errors
+yarn-error.log
+
+# Visual Studio Code workspace specific files
+.code-workspace
+
+# macOS folder attributes
+.AppleDouble
+.DS_Store
+
