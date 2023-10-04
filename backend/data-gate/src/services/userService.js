@@ -53,16 +53,29 @@ const createUser = async (db, userData) => {
   }
 };
 
-const updateUser = (id, userData) => {
-  id = parseInt(id);
-  const userIndex = users.findIndex((user) => user.id === id);
+const updateUser = async (db, id, userData) => {
+  try {
+    const updateDoc = {
+      $set: userData,
+    };
 
-  if (userIndex !== -1) {
-    users[userIndex] = { ...users[userIndex], ...userData };
-    return { success: true, result: users[userIndex] };
+    const result = await db
+      .collection("users")
+      .updateOne({ _id: new ObjectId(id) }, updateDoc);
+    if (result.matchedCount !== 0) {
+      return {
+        success: true,
+        result: `Document with ID ${id} updated successfully`,
+      };
+    } else {
+      return {
+        success: false,
+        result: `Document with ID ${id} not found`,
+      };
+    }
+  } catch (error) {
+    return { success: false, result: error.message };
   }
-
-  return { success: false, result: "User not found." };
 };
 
 const deleteUser = async (db, id) => {
