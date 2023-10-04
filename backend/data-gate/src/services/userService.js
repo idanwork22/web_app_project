@@ -45,7 +45,6 @@ const isUserExist = (username, password) => !!users.find((user) => user.username
 
 const getUserIdByUsername = (username) => {
   const userIndex = users.findIndex((user) => user.username === username);
-  console.log(userIndex)
   if (userIndex !== -1) {
     return users[userIndex].id;
   }
