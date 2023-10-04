@@ -5,13 +5,13 @@ const getAllUsers = (db) => async (req, res) => {
   res.json(data);
 };
 
-const getUserById = (req, res) => {
+const getUserById = (db) => async (req, res) => {
   const id = req.params.id;
-  const data = userService.getUserById(id);
-  res.json(data ? data : { success: false, message: 'NotFound' });
+  const data = await userService.getUserById(db, id);
+  res.json(data);
 };
 
-const createUser = (req, res) => {
+const createUser = (db) => async (req, res) => {
   const userData = {
     username: req.body.username,
     user_first_name: req.body.user_first_name,
@@ -22,18 +22,18 @@ const createUser = (req, res) => {
     user_date_of_birth: req.body.user_date_of_birth,
     user_gender: req.body.user_gender,
     user_current_work: req.body.user_current_work,
-    user_profile_image: req.body.user_profile_image
+    user_profile_image: req.body.user_profile_image,
   };
 
   const isAllDataAvailable = Object.values(userData).every(Boolean);
   res.json(
     isAllDataAvailable
       ? userService.createUser(userData)
-      : { success: false, message: 'Incomplete user data provided.' }
-  ); 
+      : { success: false, message: "Incomplete user data provided." }
+  );
 };
 
-const updateUser = (req, res) => {
+const updateUser = (db) => async (req, res) => {
   const id = req.params.id;
   const userData = {
     username: req.body.username,
@@ -45,34 +45,34 @@ const updateUser = (req, res) => {
     user_date_of_birth: req.body.user_date_of_birth,
     user_gender: req.body.user_gender,
     user_current_work: req.body.user_current_work,
-    user_profile_image: req.body.user_profile_image
+    user_profile_image: req.body.user_profile_image,
   };
   const isAllDataAvailable = Object.values(userData).every(Boolean);
   res.json(
     isAllDataAvailable
       ? userService.updateUser(id, userData)
-      : { success: false, message: 'Incomplete user data provided.' }
+      : { success: false, message: "Incomplete user data provided." }
   );
 };
 
-const deleteUser = (req, res) => {
+const deleteUser = (db) => async (req, res) => {
   const id = req.params.id;
   const deletedUser = userService.deleteUser(id);
   res.json(deletedUser);
 };
 
-const isUserExist = (req, res) => {
+const isUserExist = (db) => async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   const deletedUser = userService.isUserExist(username, password);
   res.json(deletedUser);
-}
+};
 
-const getUserIdByUsername = (req, res) => {
+const getUserIdByUsername = (db) => async (req, res) => {
   const username = req.params.username;
-  const userId = userService.getUserIdByUsername(username);
+  const userId = await userService.getUserIdByUsername(db, username);
   res.json(userId);
-}
+};
 
 module.exports = {
   getAllUsers,
