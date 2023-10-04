@@ -241,7 +241,6 @@
                   mt-2
                   text-muted
                   edit-heading
-                  pb-3
 
                 ">
               <h4 class="m-0 pointer">Your Groups</h4>
@@ -249,54 +248,72 @@
             </div>
             <!-- Group 1 -->
             <li class="dropdown-item p-1">
-              <a href="#" class="
-                    d-flex
-                    align-items-center
-                    text-decoration-none text-dark
-                  ">
-                <div class="p-2">
-                  <img src="https://source.unsplash.com/random/1" alt="from fb"
-                    class="rounded border border-1 border-secondary"
-                    style="width: 38px; height: 38px; object-fit: cover" />
-                </div>
-                <div>
-                  <p class="m-0">Group 1</p>
-                </div>
-              </a>
+              <button
+              class="
+                d-flex
+                align-items-center
+                text-decoration-none text-dark
+                w-100
+                btn
+              "
+              onclick="location.href = 'groups.html'"
+              >
+              <div class="p-2">
+                <img
+                  src="https://source.unsplash.com/random/1"
+                  alt="from fb"
+                  class="rounded border border-1 border-secondary"
+                  style="width: 38px; height: 38px; object-fit: cover"
+                />
+              </div>
+              Group 1
+            </button>
             </li>
             <!-- short-2 -->
             <li class="dropdown-item p-1">
-              <a href="" class="
-                    d-flex
-                    align-items-center
-                    text-decoration-none text-dark
-                  ">
-                <div class="p-2">
-                  <img src="https://source.unsplash.com/random/2" alt="from fb"
-                    class="rounded border border-1 border-secondary"
-                    style="width: 38px; height: 38px; object-fit: cover" />
-                </div>
-                <div>
-                  <p class="m-0">Group 2</p>
-                </div>
-              </a>
+              <button
+              class="
+                d-flex
+                align-items-center
+                text-decoration-none text-dark
+                w-100
+                btn
+              "
+              onclick="location.href = 'groups.html'"
+              >
+              <div class="p-2">
+                <img
+                  src="https://source.unsplash.com/random/1"
+                  alt="from fb"
+                  class="rounded border border-1 border-secondary"
+                  style="width: 38px; height: 38px; object-fit: cover"
+                />
+              </div>
+              Group 2
+            </button>
             </li>
             <!-- short-3 -->
             <li class="dropdown-item p-1">
-              <a href="" class="
-                    d-flex
-                    align-items-center
-                    text-decoration-none text-dark
-                  ">
-                <div class="p-2">
-                  <img src="https://source.unsplash.com/random/3" alt="from fb"
-                    class="rounded border border-1 border-secondary"
-                    style="width: 38px; height: 38px; object-fit: cover" />
-                </div>
-                <div>
-                  <p class="m-0">Group 3</p>
-                </div>
-              </a>
+              <button
+              class="
+                d-flex
+                align-items-center
+                text-decoration-none text-dark
+                w-100
+                btn
+              "
+              onclick="location.href = 'groups.html'"
+              >
+              <div class="p-2">
+                <img
+                  src="https://source.unsplash.com/random/1"
+                  alt="from fb"
+                  class="rounded border border-1 border-secondary"
+                  style="width: 38px; height: 38px; object-fit: cover"
+                />
+              </div>
+              Group 3
+            </button>
             </li>
 
             <hr class="m-0" />
@@ -341,7 +358,7 @@
       </div>
       <!-- ================= Timeline ================= -->
       <div class="col-12 col-lg-6 pb-5">
-        <div class="d-flex flex-column justify-content-center w-100 mx-auto"
+        <div class="d-flex flex-column justify-content-center w-100 mx-auto timeline"
           style="padding-top: 56px; max-width: 680px">
           <!-- create post -->
           <div class="bg-white p-3 mt-3 rounded border shadow">
@@ -387,7 +404,7 @@
                         </div>
                         <!-- text -->
                         <div>
-                          <textarea cols="30" rows="5" class="bg-gray form-control border-0"></textarea>
+                          <textarea cols="30" rows="5" class="bg-gray form-control border-0 newPostTextArea"></textarea>
                         </div>
                         <!-- options -->
                         <div class="
@@ -399,17 +416,12 @@
                               p-3
                               mt-3
                             ">
-                          <p class="m-0">Add to your post</p>
-                          <div>
-                            <i class="
-                                  fas
-                                  fa-images
-                                  fs-5
-                                  text-success
-                                  pointer
-                                  mx-1
-                                "></i>
+                          
+                          <input type="file" class="file w-100" accept="image/png,image/jpg,image/jpeg">
+                          <div class="uploadedimage">
                           </div>
+                        </input>
+                          
                         </div>
                       </div>
                     </div>
@@ -418,7 +430,7 @@
                   </div>
                   <!-- footer -->
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-primary w-100">
+                    <button type="button" class="btn btn-primary w-100 postButton">
                       Post
                     </button>
                   </div>
@@ -978,9 +990,9 @@
       </div>
     </div>
   </div>
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="./main.js"></script>
+  <script src="./feed.js"></script>
+
 </body>
 
 </html>
