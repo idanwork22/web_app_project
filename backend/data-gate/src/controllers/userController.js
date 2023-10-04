@@ -57,7 +57,7 @@ const updateUser = (db) => async (req, res) => {
 
 const deleteUser = (db) => async (req, res) => {
   const id = req.params.id;
-  const deletedUser = userService.deleteUser(id);
+  const deletedUser = await userService.deleteUser(db, id);
   res.json(deletedUser);
 };
 

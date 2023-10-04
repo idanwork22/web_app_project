@@ -65,23 +65,35 @@ const updateUser = (id, userData) => {
   return { success: false, result: "User not found." };
 };
 
-const deleteUser = (id) => {
-  id = parseInt(id);
-  const userIndex = users.findIndex((user) => user.id === id);
+const deleteUser = async (db, id) => {
+  try {
+    const result = await db
+      .collection("users")
+      .deleteOne({ _id: new ObjectId(id) });
 
-  if (userIndex !== -1) {
-    const deletedUser = users.splice(userIndex, 1);
-    return { success: true, result: deletedUser[0] };
+    if (result.deletedCount !== 0) {
+      return {
+        success: true,
+        result: `Document with ID ${id} deleted successfully`,
+      };
+    } else {
+      return {
+        success: false,
+        result: `Document with ID ${id} not found`,
+      };
+    }
+  } catch (error) {
+    return { success: false, result: error.message };
   }
-
-  return { success: false, result: "User not found." };
 };
 
 // return True / False
 const isUserExist = async (db, username, password) => {
   try {
-    const result = await db.collection("users").findOne({ username: username, password: password });
-    return{ success: !!result, result: !!result };
+    const result = await db
+      .collection("users")
+      .findOne({ username: username, password: password });
+    return { success: !!result, result: !!result };
   } catch (error) {
     return { success: false, result: error.message };
   }
