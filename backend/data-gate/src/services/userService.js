@@ -78,13 +78,13 @@ const deleteUser = (id) => {
 };
 
 // return True / False
-const isUserExist = (username, password) => {
-  return {
-    success: true,
-    result: !!users.find(
-      (user) => user.username === username && user.password === password
-    ),
-  };
+const isUserExist = async (db, username, password) => {
+  try {
+    const result = await db.collection("users").findOne({ username: username, password: password });
+    return{ success: !!result, result: !!result };
+  } catch (error) {
+    return { success: false, result: error.message };
+  }
 };
 
 const getUserIdByUsername = async (db, username) => {

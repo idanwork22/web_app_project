@@ -64,7 +64,7 @@ const deleteUser = (db) => async (req, res) => {
 const isUserExist = (db) => async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
-  const deletedUser = userService.isUserExist(username, password);
+  const deletedUser = await userService.isUserExist(db, username, password);
   res.json(deletedUser);
 };
 
