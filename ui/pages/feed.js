@@ -41,8 +41,51 @@ const getCurrentDateTime = () => {
 }
 
 
-//like btn
+//comments post btn
+function postComment() {
+  var allComments = document.querySelectorAll('.comments');
+  var commentsCounter = document.querySelectorAll('.commentsCounter');
+  var newCommentInputBtn = Array.from(document.querySelectorAll('.newCommentInputBtn'));
+  var newCommentInput = Array.from(document.querySelectorAll('.newCommentInput'));
 
+
+  newCommentInputBtn.forEach((commentBtn, i) => {
+
+    commentBtn.addEventListener('click', () => {
+
+      var author = 'John'
+      var realCommnet = newCommentInput[i].value
+
+      var newCommentObj = document.createElement('div')
+      newCommentObj.className = "d-flex align-items-center my-1";
+
+      newCommentObj.innerHTML = `<!-- comment -->
+        <!-- avatar -->
+        <img src="https://source.unsplash.com/random/2" alt="avatar" class="rounded-circle me-2"
+          style="
+              width: 38px;
+              height: 38px;
+              object-fit: cover;
+            " />
+        <!-- comment text -->
+        <div class="p-3 rounded comment__input w-100">
+          <p class="fw-bold m-0">${author}</p>
+          <p class="m-0 fs-7 bg-gray p-2 rounded">
+            ${realCommnet}
+          </p>
+        </div>
+     `;
+      var accordionItems = allComments[i].children.length
+      allComments[i].insertBefore(newCommentObj,allComments[i].children[accordionItems-1])
+      commentsCounter[i].innerHTML = `${accordionItems} Comments`
+    });
+  });
+
+}
+postComment();
+
+
+//like post btn
 function likeBtns() {
   var likeButtons = Array.from(document.querySelectorAll('.likeButton'));
   var likeCounter = Array.from(document.querySelectorAll('.likeCounter'));
