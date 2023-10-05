@@ -55,11 +55,11 @@ function chat() {
   allContacts.forEach((contactLiObj, i) => {
     contactLiObj.addEventListener('click', () => {
       modalContactName.innerHTML = allContacts[i].querySelector('.contactName').innerHTML
+      getAllMessages(chatID);
     })
   });
 
   newMessageInputBtn.addEventListener('click', () => {
-    getAllMessages(chatID);
     sendNewMessage(newMessageInput.value);
   });
 }
