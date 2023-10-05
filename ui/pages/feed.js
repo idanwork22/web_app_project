@@ -1,3 +1,5 @@
+
+
 // popover
 var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
 var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
@@ -42,21 +44,28 @@ const getCurrentDateTime = () => {
 
 
 //chat
+const socket = io('http://localhost:3000'); // Replace with your server address
 const chatModal = new bootstrap.Modal('#singleChat1');
 const modalContactName = document.querySelector('.modalContactName');
 var messagesObj = document.querySelectorAll('.messages');
+var chatID = 11234; //TODO: api continue
+
+socket.emit('joinRoom', chatID);
+
+socket.on('newMessage', (message) => {
+  // code to append message to the chat
+});
 
 function chat() {
-  var chatID = 11234; //TODO: api continue
   var allContacts = document.querySelectorAll('.contacts li');
   var newMessageInputBtn = document.querySelector('.newMessageBtn');
   var newMessageInput = document.querySelector('.newMessageInput');
 
   allContacts.forEach((contactLiObj, i) => {
     contactLiObj.addEventListener('click', () => {
-      modalContactName.innerHTML = allContacts[i].querySelector('.contactName').innerHTML
+      modalContactName.innerHTML = allContacts[i].querySelector('.contactName').innerHTML;
       getAllMessages(chatID);
-    })
+    });
   });
 
   newMessageInputBtn.addEventListener('click', () => {
@@ -66,22 +75,29 @@ function chat() {
 var getAllMessages = (chatID) => {  //TODO: api continue
 }
 var sendNewMessage = (text) => {
-  var newMessageObj = document.createElement('li')
+  // Emit the new message to the server
+  socket.emit('newMessage', { chatID, message: text });
+
+  // Create a new <li> element to hold the message
+  var newMessageObj = document.createElement('li');
   newMessageObj.className = "list-group-item border-0 d-flex";
 
+  // Set the inner HTML to include the message and avatar
   newMessageObj.innerHTML = `
-  <!-- avatar -->
-  <div>
-    <img src="https://source.unsplash.com/random/1" alt="avatar" class="rounded-circle me-2"
-      style="width: 28px; height: 28px; object-fit: cover" />
-  </div>
-  <!-- message -->
-  <p class="bg-gray p-2 rounded">${text}</p>
+    <!-- avatar -->
+    <div>
+      <img src="https://source.unsplash.com/random/1" alt="avatar" class="rounded-circle me-2"
+        style="width: 28px; height: 28px; object-fit: cover" />
+    </div>
+    <!-- message -->
+    <p class="bg-gray p-2 rounded">${text}</p>
   `;
-  messagesObj[0].appendChild(newMessageObj)
-}
-chat();
 
+  // Append the new message to the messages list
+  messagesObj[0].appendChild(newMessageObj);
+}
+
+chat();
 //comments post btn
 function postComment() { //TODO: Fix btn allways up & disable send empty comments
   var allComments = document.querySelectorAll('.comments');
