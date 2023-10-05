@@ -7,8 +7,10 @@ const config = {
         port: process.env.S3_GATE || 8006,
     },
     s3Browser: {
-        host: process.env.S3_HOST || 's3.amazonaws.com',
-        port: process.env.S3_PORT || '80',
+        accessKeyId: process.env.accessKeyId || "from .env",
+        secretAccessKey: process.env.secretAccessKey || "from .env",
+        bucket: process.env.bucket || "webappproject",
+        previewUrl: process.env.previewUrl || "https://webappproject.s3.us-east-1.amazonaws.com"
     }
 }
 

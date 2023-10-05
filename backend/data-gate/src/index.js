@@ -6,8 +6,8 @@ import { connect } from "./db.js";
 const startServer = async () => {
   const db = await connect();
   const app = express();
-  app.use(express.json()); // Middleware for parsing JSON
-  app.use(express.urlencoded({ extended: true }));
+  app.use(express.json({ limit: "10mb" }));
+  app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
   app.use("/users", userRoutes(db)); // Routes
   app.use((req, res, next) => {
