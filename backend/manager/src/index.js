@@ -1,11 +1,15 @@
 import express from 'express';
 import userRoutes from './routes/userRoutes';
 import config from './config/config';
+import swaggerUi from 'swagger-ui-express'
+import YAML from 'yamljs'
+import path from 'path';
 
-
+const swaggerDocument = YAML.load(path.join(__dirname, './swagger.yml'));
 const app = express();
 app.use(express.json()); // Middleware for parsing JSON
 app.use(express.urlencoded({ extended: true }));
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
 app.use('/users', userRoutes); // Routes
