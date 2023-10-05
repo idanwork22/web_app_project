@@ -77,6 +77,19 @@ paths:
         "200":
           description: Successful response
 
+  /users/username/{username}:
+    get:
+      summary: Get user by username
+      parameters:
+        - in: path
+          name: username
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+
 components:
   schemas:
     login:

@@ -19,6 +19,15 @@ const getUserById = async (id) => {
   }
 };
 
+const getUserByUsername = async (username) => {
+  try {
+    const response = await axios.get(`${config.dataGate.url}/users/username/${username}`);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
+
 const createUser = async (userData) => {
   try {
     const response = await axios.post(`${config.dataGate.url}/users`, userData);
@@ -82,6 +91,7 @@ const isUserExist = async (userData) => {
 module.exports = {
   getAllUsers,
   getUserById,
+  getUserByUsername,
   createUser,
   updateUser,
   deleteUser,
