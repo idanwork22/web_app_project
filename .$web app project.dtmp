@@ -1,4 +1,4 @@
-<mxfile host="Electron" modified="2023-10-04T08:27:29.394Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.7.5 Chrome/114.0.5735.289 Electron/25.8.1 Safari/537.36" etag="y2Vo_eHo0s9_3KbU1gmz" version="21.7.5" type="device">
+<mxfile host="Electron" modified="2023-10-04T08:27:43.428Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.7.5 Chrome/114.0.5735.289 Electron/25.8.1 Safari/537.36" etag="6LIMr_Rogjss6QpAWa-I" version="21.7.5" type="device">
   <diagram name="Page-1" id="9L2mnkNec12nun_PjxLG">
     <mxGraphModel dx="3718" dy="8206" grid="1" gridSize="10" guides="0" tooltips="1" connect="1" arrows="0" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -138,6 +138,13 @@
         </mxCell>
         <mxCell id="3biNN_TnJrrAybcKZK7a-1" value="&lt;h1&gt;UPDATE - update_friend&lt;/h1&gt;&lt;div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;- update friend on the user&#39;s document friends list&lt;br&gt;if the user dont exist in is friends - add him to his array and his new friend array - else delete him&lt;/div&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;_____________________________________________&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;def (user_id, second_user_id) &amp;gt;&lt;br&gt;return &quot;added friend&quot; / &quot;remove friend&quot;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;opacity=50;strokeWidth=4;fontSize=30;" vertex="1" parent="1">
           <mxGeometry x="-230" y="-1800" width="900" height="500" as="geometry" />
+        </mxCell>
+        <mxCell id="3biNN_TnJrrAybcKZK7a-2" value="" style="edgeStyle=none;orthogonalLoop=1;jettySize=auto;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="340" y="110" as="sourcePoint" />
+            <mxPoint x="420" y="110" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
