@@ -7,8 +7,8 @@ import path from 'path';
 
 const swaggerDocument = YAML.load(path.join(__dirname, './swagger.yml'));
 const app = express();
-app.use(express.json()); // Middleware for parsing JSON
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 

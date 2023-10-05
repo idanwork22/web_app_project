@@ -13,9 +13,8 @@ const startServer = async () => {
     const s3 = new AWS.S3();
 
     const app = express();
-    app.use(express.json()); // Middleware for parsing JSON
-    app.use(express.urlencoded({ extended: true }));
-    app.use(express.json({ limit: '10mb' })); // Increase limit if needed
+    app.use(express.json({ limit: "10mb" }));
+    app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
     app.use("/posts", postsRoutes); // Routes
     app.use("/users", usersRoutes(s3)); // Routes
