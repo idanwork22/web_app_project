@@ -1,70 +1,76 @@
 // popover
 var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
 var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-    return new bootstrap.Popover(popoverTriggerEl);
+  return new bootstrap.Popover(popoverTriggerEl);
 });
 
 // Gender Select
 if (window.location.pathname === "/") {
-    const radioBtn1 = document.querySelector("#flexRadioDefault1");
-    const radioBtn2 = document.querySelector("#flexRadioDefault2");
-    const radioBtn3 = document.querySelector("#flexRadioDefault3");
-    const genderSelect = document.querySelector("#genderSelect");
+  const radioBtn1 = document.querySelector("#flexRadioDefault1");
+  const radioBtn2 = document.querySelector("#flexRadioDefault2");
+  const radioBtn3 = document.querySelector("#flexRadioDefault3");
+  const genderSelect = document.querySelector("#genderSelect");
 
-    radioBtn1.addEventListener("change", () => {
-        genderSelect.classList.add("d-none");
-    });
-    radioBtn2.addEventListener("change", () => {
-        genderSelect.classList.add("d-none");
-    });
-    radioBtn3.addEventListener("change", () => {
-        genderSelect.classList.remove("d-none");
-    });
+  radioBtn1.addEventListener("change", () => {
+    genderSelect.classList.add("d-none");
+  });
+  radioBtn2.addEventListener("change", () => {
+    genderSelect.classList.add("d-none");
+  });
+  radioBtn3.addEventListener("change", () => {
+    genderSelect.classList.remove("d-none");
+  });
 }
 
 
 const getCurrentDateTime = () => {
-    const months = [
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ];
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
 
-    const currentDate = new Date();
-    const month = months[currentDate.getMonth()];
-    const day = currentDate.getDate();
-    const hours = currentDate.getHours() % 12 || 12;
-    const minutes = currentDate.getMinutes();
-    const period = currentDate.getHours() >= 12 ? "pm" : "am";
+  const currentDate = new Date();
+  const month = months[currentDate.getMonth()];
+  const day = currentDate.getDate();
+  const hours = currentDate.getHours() % 12 || 12;
+  const minutes = currentDate.getMinutes();
+  const period = currentDate.getHours() >= 12 ? "pm" : "am";
 
-    const formattedDate = `${month} ${day} at ${hours}:${minutes} ${period}`;
-    return formattedDate
+  const formattedDate = `${month} ${day} at ${hours}:${minutes} ${period}`;
+  return formattedDate
 }
 
 
 //like btn
-const likeButtons = Array.from(document.querySelectorAll('.likeButton'));
-const likeCounter = Array.from(document.querySelectorAll('.likeCounter'));
+
+function likeBtns() {
+  var likeButtons = Array.from(document.querySelectorAll('.likeButton'));
+  var likeCounter = Array.from(document.querySelectorAll('.likeCounter'));
 
 
-likeButtons.forEach((likeBtn, i) => {
-  let isLiked = false;
+  likeButtons.forEach((likeBtn, i) => {
+    let isLiked = false;
 
-    likeBtn.addEventListener('click', ()=> {
+    likeBtn.addEventListener('click', () => {
       isLiked = !isLiked;
-      
+
       if (isLiked) {
         likeCounter[i].innerHTML = parseInt(likeCounter[i].innerHTML) + 1;
-        likeBtn.classList.replace('text-muted','text-primary')
-    } else {
+        likeBtn.classList.replace('text-muted', 'text-primary')
+      } else {
         likeCounter[i].innerHTML = parseInt(likeCounter[i].innerHTML) - 1;
-        
-        likeBtn.classList.replace('text-primary','text-muted')
-        
-    }
+        likeBtn.classList.replace('text-primary', 'text-muted')
+
+      }
     });
-});
+  });
 
+}
+likeBtns();
 
+const updateDoms = () => {
+  likeBtns();
+}
 
 
 //create new post
@@ -75,24 +81,24 @@ const uploadedimage = document.querySelector(".uploadedimage")
 var newImage = ''
 
 uploadImageInput.addEventListener("change", () => {
-    newImage = uploadImageInput.files[0]
-    displayQuedImageInsideModal()
+  newImage = uploadImageInput.files[0]
+  displayQuedImageInsideModal()
 })
 
 uploadImageInput.addEventListener("drop", (e) => {
-    if (!e.dataTransfer.files[0].type.match("image")) {
-        newImage = uploadImageInput.files[0]
-        displayQuedImageInsideModal()
-    }
+  if (!e.dataTransfer.files[0].type.match("image")) {
+    newImage = uploadImageInput.files[0]
+    displayQuedImageInsideModal()
+  }
 })
 
 const displayQuedImageInsideModal = () => {
-    var img = `
+  var img = `
         <div class="uploadedimage">
         <img src="${URL.createObjectURL(newImage)}" className="img-fluid rounded" style="width: 38px; height: 38px; object-fit: cover" alt="image">
         </div>
     `
-    uploadedimage.innerHTML = img
+  uploadedimage.innerHTML = img
 }
 
 //getting inforamtion
@@ -102,23 +108,23 @@ const createPostModal = new bootstrap.Modal('#createPostModal');
 const timeline = document.querySelector(".timeline");
 
 createNewPostButton.addEventListener("click", () => {
-    createNewPost(newPostTextArea.value);
+  createNewPost(newPostTextArea.value);
 });
 
 const createNewPost = (text) => {
-    var newPost = document.createElement("div");
-    var author = "John";
-    if (newImage === '') {
-        createPostWithoutImage(text, newPost, author)
-    }
-    else {
-        createPostWithImage(text, newPost, author)
-    }
+  var newPost = document.createElement("div");
+  var author = "John";
+  if (newImage === '') {
+    createPostWithoutImage(text, newPost, author)
+  }
+  else {
+    createPostWithImage(text, newPost, author)
+  }
 }
 
 var createPostWithoutImage = (text, newPost, author) => {
-    newPost.className = "bg-white p-4 rounded shadow mt-3";
-    newPost.innerHTML = `
+  newPost.className = "bg-white p-4 rounded shadow mt-3";
+  newPost.innerHTML = `
   <!-- author -->
             <div class="d-flex justify-content-between">
               <!-- avatar -->
@@ -178,7 +184,7 @@ var createPostWithoutImage = (text, newPost, author) => {
                   <div class="me-2">
                     <i class="text-primary fas fa-thumbs-up"></i>
                   </div>
-                  <p class="m-0 text-muted fs-7">No one still like it</p>
+                  <p class="likeCounter m-0 text-muted fs-7">0</p>
                 </div>
                 <!-- comments start-->
                 <div class="accordion" id="accordionExample">
@@ -200,6 +206,7 @@ var createPostWithoutImage = (text, newPost, author) => {
                     <!-- comment & like bar -->
                     <div class="d-flex justify-content-around">
                       <div class="
+                            likeButton
                             dropdown-item
                             rounded
                             d-flex
@@ -255,14 +262,15 @@ var createPostWithoutImage = (text, newPost, author) => {
               </div>
             </div>
   `;
-    timeline.insertBefore(newPost, timeline.children[1]);
-    createPostModal.hide();
+  timeline.insertBefore(newPost, timeline.children[1]);
+  createPostModal.hide();
+  updateDoms();
 }
 
 var createPostWithImage = (text, newPost, author) => {
-    var img = URL.createObjectURL(newImage);
-    newPost.className = "bg-white p-4 rounded shadow mt-3";
-    newPost.innerHTML = `
+  var img = URL.createObjectURL(newImage);
+  newPost.className = "bg-white p-4 rounded shadow mt-3";
+  newPost.innerHTML = `
   <!-- author -->
             <div class="d-flex justify-content-between">
               <!-- avatar -->
@@ -323,7 +331,7 @@ var createPostWithImage = (text, newPost, author) => {
                   <div class="me-2">
                     <i class="text-primary fas fa-thumbs-up"></i>
                   </div>
-                  <p class="m-0 text-muted fs-7">No one still like it</p>
+                  <p class="likeCounter m-0 text-muted fs-7">0</p>
                 </div>
                 <!-- comments start-->
                 <div class="accordion" id="accordionExample">
@@ -345,6 +353,7 @@ var createPostWithImage = (text, newPost, author) => {
                     <!-- comment & like bar -->
                     <div class="d-flex justify-content-around">
                       <div class="
+                            likeButton
                             dropdown-item
                             rounded
                             d-flex
@@ -400,8 +409,10 @@ var createPostWithImage = (text, newPost, author) => {
               </div>
             </div>
   `;
-    timeline.insertBefore(newPost, timeline.children[1]);
-    createPostModal.hide();
+  timeline.insertBefore(newPost, timeline.children[1]);
+  createPostModal.hide();
+  updateDoms();
+
 }
 
 
@@ -412,56 +423,56 @@ const weatherIcon = document.querySelector(".weather-icon");
 
 
 searchBoxWeather.addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') {
-        checkWeather(searchBoxWeather.value);
-    }
+  if (e.key === 'Enter') {
+    checkWeather(searchBoxWeather.value);
+  }
 });
 
 searchBoxWeatherBtn.addEventListener("click", () => {
-    checkWeather(searchBoxWeather.value);
+  checkWeather(searchBoxWeather.value);
 });
 
 async function checkWeather(city) {
-    const apiKey = "6240e45b7ed109724d1dde47b4cdd953";
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric`;
+  const apiKey = "6240e45b7ed109724d1dde47b4cdd953";
+  const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric`;
 
-    var response = await fetch(apiUrl + `&appid=${apiKey}`);
-    var data = await response.json();
+  var response = await fetch(apiUrl + `&appid=${apiKey}`);
+  var data = await response.json();
 
-    if (!response.ok) {
-        document.querySelector(".city").innerHTML = "City Not Found..."
-        document.querySelector(".temp").innerHTML = ""
+  if (!response.ok) {
+    document.querySelector(".city").innerHTML = "City Not Found..."
+    document.querySelector(".temp").innerHTML = ""
+  }
+  else {
+    document.querySelector(".city").innerHTML = data.name
+    document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°C"
+
+    if (data.weather[0].main == "Clouds") {
+      weatherIcon.src = "../images/weather/clouds.png";
+    }
+    else if (data.weather[0].main == "Clear") {
+      weatherIcon.src = "../images/weather/clear.png";
+    }
+    else if (data.weather[0].main == "Rain") {
+      weatherIcon.src = "../images/weather/rain.png";
+    }
+    else if (data.weather[0].main == "Drizzle") {
+      weatherIcon.src = "../images/weather/drizzle.png";
+    }
+    else if (data.weather[0].main == "Mist") {
+      weatherIcon.src = "../images/weather/mist.png";
+    }
+    else if (data.weather[0].main == "Snow") {
+      weatherIcon.src = "../images/weather/Snow.png";
+    }
+    else if (data.weather[0].main == "Snow") {
+      weatherIcon.src = "../images/weather/Snow.png";
     }
     else {
-        document.querySelector(".city").innerHTML = data.name
-        document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°C"
-
-        if (data.weather[0].main == "Clouds") {
-            weatherIcon.src = "../images/weather/clouds.png";
-        }
-        else if (data.weather[0].main == "Clear") {
-            weatherIcon.src = "../images/weather/clear.png";
-        }
-        else if (data.weather[0].main == "Rain") {
-            weatherIcon.src = "../images/weather/rain.png";
-        }
-        else if (data.weather[0].main == "Drizzle") {
-            weatherIcon.src = "../images/weather/drizzle.png";
-        }
-        else if (data.weather[0].main == "Mist") {
-            weatherIcon.src = "../images/weather/mist.png";
-        }
-        else if (data.weather[0].main == "Snow") {
-            weatherIcon.src = "../images/weather/Snow.png";
-        }
-        else if (data.weather[0].main == "Snow") {
-            weatherIcon.src = "../images/weather/Snow.png";
-        }
-        else {
-            weatherIcon.src = "../images/weather/wind.png";
-        }
-
-        weatherIcon.hidden = false
+      weatherIcon.src = "../images/weather/wind.png";
     }
+
+    weatherIcon.hidden = false
+  }
 }
 
