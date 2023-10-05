@@ -41,6 +41,32 @@ const getCurrentDateTime = () => {
 }
 
 
+//like btn
+const likeButtons = Array.from(document.querySelectorAll('.likeButton'));
+const likeCounter = Array.from(document.querySelectorAll('.likeCounter'));
+
+
+likeButtons.forEach((likeBtn, i) => {
+  let isLiked = false;
+
+    likeBtn.addEventListener('click', ()=> {
+      isLiked = !isLiked;
+      
+      if (isLiked) {
+        likeCounter[i].innerHTML = parseInt(likeCounter[i].innerHTML) + 1;
+        likeBtn.classList.replace('text-muted','text-primary')
+    } else {
+        likeCounter[i].innerHTML = parseInt(likeCounter[i].innerHTML) - 1;
+        
+        likeBtn.classList.replace('text-primary','text-muted')
+        
+    }
+    });
+});
+
+
+
+
 //create new post
 //upload image
 const uploadImageInput = document.querySelector(".file")
