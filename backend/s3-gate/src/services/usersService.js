@@ -1,11 +1,21 @@
-const users = [
-  { id: 1, username: "Yoav", password: "123", user_profile_image: "image1" },
-  { id: 2, username: "Idan", password: "123", user_profile_image: "image2" },
-  { id: 3, username: "Omer", password: "123", user_profile_image: "image3" },
-  { id: 4, username: "Raza", password: "123", user_profile_image: "image4" },
-];
+import config from "../config/config";
 
-const getAllUsersPhotos = () => users;
+const params = {
+  Bucket: config.s3Browser.bucket,
+  Prefix: "users_bucket/",
+};
+
+const getAllUsersPhotos = async (s3) => {
+  try {
+    const data = await s3.listObjectsV2(params).promise();
+    const files = data.Contents.filter((item) => item.key !== "users_bucket/").map(
+      (item) => `${config.s3Browser.previewUrl}/${item.Key}`
+    );
+    return { success: true, result: files };
+  } catch (error) {
+    return { success: false, result: error.message };
+  }
+};
 
 const getUserPhoto = (id) => {
   id = parseInt(id);
@@ -43,7 +53,7 @@ const updateUserPhoto = (id, user_profile_image) => {
 const deleteUserPhoto = (id) => {
   id = parseInt(id);
   const userIndex = users.findIndex((user) => user.id === id);
-  
+
   if (userIndex !== -1) {
     users[userIndex].user_profile_image = "";
     return users[userIndex];

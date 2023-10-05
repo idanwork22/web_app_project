@@ -1,7 +1,7 @@
 import usersService from "../services/usersService";
 
-const getAllUsersPhotos = (req, res) => {
-  const data = usersService.getAllUsersPhotos();
+const getAllUsersPhotos = (s3) => async (req, res) => {
+  const data = await usersService.getAllUsersPhotos(s3);
   res.json(data);
 };
 
