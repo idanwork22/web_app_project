@@ -54,11 +54,13 @@ const updateUser = async (id, userData) => {
   }
 };
 
-// TODO: delete user from user's collection based on user_id ,
 // TODO: also deleting each post he creates, every chat he connect to and every group he member of
 const deleteUser = async (id) => {
   try {
     const response = await axios.delete(`${config.dataGate.url}/users/${id}`);
+    if (response.data.success){
+      await axios.delete(`${config.s3Gate.url}/users/${id}/photo`);
+    }
     return response.data;
   } catch (error) {
     return error;
