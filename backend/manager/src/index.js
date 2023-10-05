@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/users', userRoutes); // Routes
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080'); // Replace with your actual frontend URL
+  res.setHeader('Access-Control-Allow-Origin', `http://${config.manager.host}:${config.manager.port}`); // Replace with your actual frontend URL
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();

@@ -19,19 +19,15 @@ const getUserById = async (id) => {
   }
 };
 
-// TODO: add user image to s3
 const createUser = async (userData) => {
   try {
     const response = await axios.post(`${config.dataGate.url}/users`, userData);
     if (response.data.success) {
       const userId = response.data.result.insertedId;
-      //post to s3
-      const s3Response = await axios.put(
-        `${config.dataGate.url}/users/${userId}`,
-        {
-          user_profile_image: `https://webappproject.s3.us-east-1.amazonaws.com/users_bucket/${userId}.png`,
-        }
-      );
+      await axios.post(`${config.s3Gate.url}/users/${userId}/photo`, userData);
+      await axios.put(`${config.dataGate.url}/users/${userId}`, {
+        user_profile_image: `https://webappproject.s3.us-east-1.amazonaws.com/users_bucket/${userId}.png`,
+      });
     }
     return response.data;
   } catch (error) {
@@ -39,13 +35,19 @@ const createUser = async (userData) => {
   }
 };
 
-// TODO: if we change user image need to upload to s3
 const updateUser = async (id, userData) => {
   try {
+    const {user_profile_image, ...rest} = userData
     const response = await axios.put(
       `${config.dataGate.url}/users/${id}`,
       userData
     );
+    if (response.status && user_profile_image){
+      const response = await axios.put(
+        `${config.s3Gate.url}/users/${id}/photo`,
+        userData
+      );
+    }
     return response.data;
   } catch (error) {
     return error;
