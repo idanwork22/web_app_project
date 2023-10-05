@@ -15,6 +15,7 @@ const startServer = async () => {
     const app = express();
     app.use(express.json()); // Middleware for parsing JSON
     app.use(express.urlencoded({ extended: true }));
+    app.use(express.json({ limit: '10mb' })); // Increase limit if needed
 
     app.use("/posts", postsRoutes); // Routes
     app.use("/users", usersRoutes(s3)); // Routes

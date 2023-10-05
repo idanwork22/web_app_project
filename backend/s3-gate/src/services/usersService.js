@@ -20,24 +20,40 @@ const getAllUsersPhotos = async (s3) => {
 const getUserPhoto = async (s3, id) => {
   try {
     const key = `${params.Prefix}${id}.png`;
-    const data = await s3.getObject({ Bucket: params.Bucket, Key: key }).promise();
+    const data = await s3
+      .getObject({ Bucket: params.Bucket, Key: key })
+      .promise();
     return { success: true, result: data.Body };
   } catch (error) {
     return { success: false, result: error.message };
   }
 };
 
-const createUserPhoto = (id, user_profile_image) => {
-  id = parseInt(id);
-  const userIndex = users.findIndex((user) => user.id === id);
-
-  if (userIndex === -1) {
-    const newUser = { id, user_profile_image };
-    users.push(newUser);
-    return newUser;
+const createUserPhoto = async (s3, id, user_profile_image) => {
+  try {
+    try {
+      // Check if file with the same id already exists
+      await s3
+        .headObject({ Bucket: params.Bucket, Key: `${params.Prefix}${id}.png` })
+        .promise();
+      return { success: false, result: `File with id ${id} already exists` };
+    } catch (error) {
+      const fileContent = Buffer.from(user_profile_image, "base64");
+      const newUser = {
+        Bucket: params.Bucket,
+        Key: `${params.Prefix}${id}.png`,
+        Body: fileContent,
+        ContentType: "png", // Set the content type appropriately
+      };
+      await s3.upload(newUser).promise();
+      return {
+        success: true,
+        result: `File uploaded successfully - ${id}.png`,
+      };
+    }
+  } catch (error) {
+    return { success: false, result: error.message };
   }
-
-  return { success: false, message: "User already exists." };
 };
 
 const updateUserPhoto = (id, user_profile_image) => {
