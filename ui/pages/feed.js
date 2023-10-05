@@ -154,7 +154,6 @@ likeBtns();
 
 const updateDoms = () => {
   likeBtns();
-  postComment();
 }
 
 
@@ -284,7 +283,7 @@ var createPostWithoutImage = (text, newPost, author) => {
                             justify-content-end
                           " data-bs-toggle="collapse" data-bs-target="#collapsePost1" aria-expanded="false"
                         aria-controls="collapsePost1">
-                        <p class="commentsCounter m-0">0 Comments</p>
+                        <p class="m-0">0 Comments</p>
                       </div>
                     </h2>
                     <hr />
@@ -323,7 +322,7 @@ var createPostWithoutImage = (text, newPost, author) => {
                     <div id="collapsePost1" class="accordion-collapse collapse" aria-labelledby="headingTwo"
                       data-bs-parent="#accordionExample">
                       <hr />
-                      <div class="comments accordion-body">
+                      <div class="accordion-body">
                         <!-- create comment -->
                         <form class="d-flex my-1">
                           <!-- avatar -->
@@ -336,9 +335,7 @@ var createPostWithoutImage = (text, newPost, author) => {
                                 " />
                           </div>
                           <!-- input -->
-                          <input type="text" class="newCommentInput form-control border-0 rounded-pill bg-gray"
-                            placeholder="Write a comment" />
-                            <button class="newCommentInputBtn btn"><i class="bi bi-send-fill"></i></button>
+                          <input type="text" class="border-0 rounded-pill bg-gray" placeholder="Write a comment" />
                         </form>
                         <!-- end -->
                       </div>
@@ -433,7 +430,7 @@ var createPostWithImage = (text, newPost, author) => {
                             justify-content-end
                           " data-bs-toggle="collapse" data-bs-target="#collapsePost1" aria-expanded="false"
                         aria-controls="collapsePost1">
-                        <p class="commentsCounter m-0">0 Comments</p>
+                        <p class="m-0">0 Comments</p>
                       </div>
                     </h2>
                     <hr />
@@ -472,7 +469,7 @@ var createPostWithImage = (text, newPost, author) => {
                     <div id="collapsePost1" class="accordion-collapse collapse" aria-labelledby="headingTwo"
                       data-bs-parent="#accordionExample">
                       <hr />
-                      <div class="comments accordion-body">
+                      <div class="accordion-body">
                         <!-- create comment -->
                         <form class="d-flex my-1">
                           <!-- avatar -->
@@ -485,10 +482,7 @@ var createPostWithImage = (text, newPost, author) => {
                                 " />
                           </div>
                           <!-- input -->
-                          <input type="text" class="newCommentInput form-control border-0 rounded-pill bg-gray"
-                            placeholder="Write a comment" />
-                            <button class="newCommentInputBtn btn"><i class="bi bi-send-fill"></i></button>
-
+                          <input type="text" class="border-0 rounded-pill bg-gray" placeholder="Write a comment" />
                         </form>
                         <!-- end -->
                       </div>
@@ -502,6 +496,7 @@ var createPostWithImage = (text, newPost, author) => {
   timeline.insertBefore(newPost, timeline.children[1]);
   createPostModal.hide();
   updateDoms();
+
 }
 
 
