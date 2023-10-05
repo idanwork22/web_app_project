@@ -7,7 +7,7 @@ const userRoutes = (s3) => {
   router.get("/photo", usersController.getAllUsersPhotos(s3));
   router.get("/:id/photo", usersController.getUserPhoto(s3));
   router.post("/:id/photo", usersController.createUserPhoto(s3));
-  router.put("/:id/photo", usersController.updateUserPhoto);
+  router.put("/:id/photo", usersController.updateUserPhoto(s3));
   router.delete("/:id/photo", usersController.deleteUserPhoto);
 
   return router;

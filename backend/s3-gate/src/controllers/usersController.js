@@ -26,12 +26,12 @@ const createUserPhoto = (s3) => async (req, res) => {
   );
 };
 
-const updateUserPhoto = (req, res) => {
+const updateUserPhoto = (s3) => async (req, res) => {
   const id = req.params.id;
   const user_profile_image = req.body.user_profile_image;
   res.json(
     user_profile_image
-      ? usersService.updateUserPhoto(id, user_profile_image)
+      ? await usersService.updateUserPhoto(s3, id, user_profile_image)
       : { success: false, message: "Please enter user_profile_image." }
   );
 };

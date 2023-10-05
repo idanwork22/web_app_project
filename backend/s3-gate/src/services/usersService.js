@@ -56,16 +56,40 @@ const createUserPhoto = async (s3, id, user_profile_image) => {
   }
 };
 
-const updateUserPhoto = (id, user_profile_image) => {
-  id = parseInt(id);
-  const userIndex = users.findIndex((user) => user.id === id);
+const updateUserPhoto = async (s3, id, user_profile_image) => {
+  try {
+    // Step 1: Check if the object exists
+    try {
+      await s3
+        .headObject({ Bucket: params.Bucket, Key: `${params.Prefix}${id}.png` })
+        .promise();
+    } catch (err) {
+      if (err.code === "NotFound") {
+        return { success: false, result: `File with id ${id} not found.` };
+      } else {
+        throw err; // Re-throw other errors
+      }
+    }
 
-  if (userIndex !== -1) {
-    users[userIndex] = { ...users[userIndex], user_profile_image };
-    return users[userIndex];
+    // Step 2: Download the file
+    const fileContent = Buffer.from(user_profile_image, "base64");
+    const newPhoto = {
+      Bucket: params.Bucket,
+      Key: `${params.Prefix}${id}.png`,
+      Body: fileContent,
+      ContentType: "png", // Set the content type appropriately
+    };
+
+    // Step 3: Upload the updated file
+    await s3.upload(newPhoto).promise();
+
+    return {
+      success: true,
+      result: `File updated successfully - ${id}.png`,
+    };
+  } catch (error) {
+    return { success: false, result: error.message };
   }
-
-  return { success: false, message: "User not found." };
 };
 
 const deleteUserPhoto = (id) => {
