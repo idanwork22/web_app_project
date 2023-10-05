@@ -41,8 +41,49 @@ const getCurrentDateTime = () => {
 }
 
 
+//chat
+const chatModal = new bootstrap.Modal('#singleChat1');
+const modalContactName = document.querySelector('.modalContactName');
+var messagesObj = document.querySelectorAll('.messages');
+
+function chat() {
+  var chatID = 11234; //TODO: api continue
+  var allContacts = document.querySelectorAll('.contacts li');
+  var newMessageInputBtn = document.querySelector('.newMessageBtn');
+  var newMessageInput = document.querySelector('.newMessageInput');
+
+  allContacts.forEach((contactLiObj, i) => {
+    contactLiObj.addEventListener('click', () => {
+      modalContactName.innerHTML = allContacts[i].querySelector('.contactName').innerHTML
+    })
+  });
+
+  newMessageInputBtn.addEventListener('click', () => {
+    getAllMessages(chatID);
+    sendNewMessage(newMessageInput.value);
+  });
+}
+var getAllMessages=(chatID)=>{  //TODO: api continue
+}
+var sendNewMessage = (text) => {
+  var newMessageObj = document.createElement('li')
+  newMessageObj.className = "list-group-item border-0 d-flex";
+
+  newMessageObj.innerHTML = `
+  <!-- avatar -->
+  <div>
+    <img src="https://source.unsplash.com/random/1" alt="avatar" class="rounded-circle me-2"
+      style="width: 28px; height: 28px; object-fit: cover" />
+  </div>
+  <!-- message -->
+  <p class="bg-gray p-2 rounded">${text}</p>
+  `;
+  messagesObj[0].appendChild(newMessageObj)
+}
+chat();
+
 //comments post btn
-function postComment() {
+function postComment() { //TODO: Fix btn allways up & disable send empty comments
   var allComments = document.querySelectorAll('.comments');
   var commentsCounter = document.querySelectorAll('.commentsCounter');
   var newCommentInputBtn = Array.from(document.querySelectorAll('.newCommentInputBtn'));
@@ -76,7 +117,7 @@ function postComment() {
         </div>
      `;
       var accordionItems = allComments[i].children.length
-      allComments[i].insertBefore(newCommentObj,allComments[i].children[accordionItems-1])
+      allComments[i].insertBefore(newCommentObj, allComments[i].children[accordionItems - 1])
       commentsCounter[i].innerHTML = `${accordionItems} Comments`
     });
   });
