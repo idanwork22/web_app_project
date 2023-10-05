@@ -36,9 +36,9 @@ const updateUserPhoto = (s3) => async (req, res) => {
   );
 };
 
-const deleteUserPhoto = (req, res) => {
+const deleteUserPhoto = (s3) => async (req, res) => {
   const id = req.params.id;
-  const updatedPost = usersService.deleteUserPhoto(id);
+  const updatedPost = await usersService.deleteUserPhoto(s3, id);
   res.json(updatedPost);
 };
 

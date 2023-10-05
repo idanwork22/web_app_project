@@ -92,16 +92,17 @@ const updateUserPhoto = async (s3, id, user_profile_image) => {
   }
 };
 
-const deleteUserPhoto = (id) => {
-  id = parseInt(id);
-  const userIndex = users.findIndex((user) => user.id === id);
-
-  if (userIndex !== -1) {
-    users[userIndex].user_profile_image = "";
-    return users[userIndex];
+const deleteUserPhoto = async (s3, id) => {
+  try {
+    const toDelete = {
+      Bucket: params.Bucket,
+      Key: `${params.Prefix}${id}.png`
+    };
+    await s3.deleteObject(toDelete).promise();
+    return { success: true, result: 'File deleted successfully' };
+  } catch (error) {
+    return { success: false, result: error.message };
   }
-
-  return { success: false, message: "User not found." };
 };
 
 module.exports = {
