@@ -63,7 +63,7 @@ function chat() {
     sendNewMessage(newMessageInput.value);
   });
 }
-var getAllMessages=(chatID)=>{  //TODO: api continue
+var getAllMessages = (chatID) => {  //TODO: api continue
 }
 var sendNewMessage = (text) => {
   var newMessageObj = document.createElement('li')
@@ -154,6 +154,7 @@ likeBtns();
 
 const updateDoms = () => {
   likeBtns();
+  postComment();
 }
 
 
@@ -162,27 +163,34 @@ const updateDoms = () => {
 const uploadImageInput = document.querySelector(".file")
 const uploadedimage = document.querySelector(".uploadedimage")
 
-var newImage = ''
+var newFile = ''
 
 uploadImageInput.addEventListener("change", () => {
-  newImage = uploadImageInput.files[0]
+  newFile = uploadImageInput.files[0]
   displayQuedImageInsideModal()
 })
 
-uploadImageInput.addEventListener("drop", (e) => {
-  if (!e.dataTransfer.files[0].type.match("image")) {
-    newImage = uploadImageInput.files[0]
-    displayQuedImageInsideModal()
-  }
-})
+// uploadImageInput.addEventListener("drop", (e) => {
+//   if (!e.dataTransfer.files[0].type.match("image")) {
+//     newFile = uploadImageInput.files[0]
+//     displayQuedImageInsideModal()
+//   }
+// }) we do not support drag and drop
 
 const displayQuedImageInsideModal = () => {
-  var img = `
-        <div class="uploadedimage">
-        <img src="${URL.createObjectURL(newImage)}" className="img-fluid rounded" style="width: 38px; height: 38px; object-fit: cover" alt="image">
-        </div>
+  var file = ''
+  if (newFile.type === 'video/mp4') {
+    file = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="38px" height="38px" fill="currentColor" class="bi bi-film" viewBox="0 0 16 16">
+      <path d="M0 1a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V1zm4 0v6h8V1H4zm8 8H4v6h8V9zM1 1v2h2V1H1zm2 3H1v2h2V4zM1 7v2h2V7H1zm2 3H1v2h2v-2zm-2 3v2h2v-2H1zM15 1h-2v2h2V1zm-2 3v2h2V4h-2zm2 3h-2v2h2V7zm-2 3v2h2v-2h-2zm2 3h-2v2h2v-2z"/>
+    </svg>
     `
-  uploadedimage.innerHTML = img
+  }
+  else {
+    file = `<img src="${URL.createObjectURL(newFile)}" className="img-fluid rounded" style="width: 38px; height: 38px; object-fit: cover" alt="image">`
+  }
+
+  uploadedimage.innerHTML = file
 }
 
 //getting inforamtion
@@ -198,11 +206,23 @@ createNewPostButton.addEventListener("click", () => {
 const createNewPost = (text) => {
   var newPost = document.createElement("div");
   var author = "John";
-  if (newImage === '') {
+  if (newFile === '') {
     createPostWithoutImage(text, newPost, author)
   }
   else {
-    createPostWithImage(text, newPost, author)
+    if (newFile) {
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        const fileType = newFile.type;
+        if (fileType.startsWith('image')) {
+          createPostWithImage(text, newPost, author)
+        } else if (fileType.startsWith('video')) {
+          createPostWithVideo(text, newPost, author)
+        }
+      };
+      reader.readAsDataURL(newFile);
+    }
   }
 }
 
@@ -283,7 +303,7 @@ var createPostWithoutImage = (text, newPost, author) => {
                             justify-content-end
                           " data-bs-toggle="collapse" data-bs-target="#collapsePost1" aria-expanded="false"
                         aria-controls="collapsePost1">
-                        <p class="m-0">0 Comments</p>
+                        <p class="commentsCounter m-0">0 Comments</p>
                       </div>
                     </h2>
                     <hr />
@@ -322,7 +342,7 @@ var createPostWithoutImage = (text, newPost, author) => {
                     <div id="collapsePost1" class="accordion-collapse collapse" aria-labelledby="headingTwo"
                       data-bs-parent="#accordionExample">
                       <hr />
-                      <div class="accordion-body">
+                      <div class="comments accordion-body">
                         <!-- create comment -->
                         <form class="d-flex my-1">
                           <!-- avatar -->
@@ -335,7 +355,9 @@ var createPostWithoutImage = (text, newPost, author) => {
                                 " />
                           </div>
                           <!-- input -->
-                          <input type="text" class="border-0 rounded-pill bg-gray" placeholder="Write a comment" />
+                          <input type="text" class="newCommentInput form-control border-0 rounded-pill bg-gray"
+                            placeholder="Write a comment" />
+                            <button type="button" class="newCommentInputBtn btn"><i class="bi bi-send-fill"></i></button>
                         </form>
                         <!-- end -->
                       </div>
@@ -352,7 +374,7 @@ var createPostWithoutImage = (text, newPost, author) => {
 }
 
 var createPostWithImage = (text, newPost, author) => {
-  var img = URL.createObjectURL(newImage);
+  var img = URL.createObjectURL(newFile);
   newPost.className = "bg-white p-4 rounded shadow mt-3";
   newPost.innerHTML = `
   <!-- author -->
@@ -430,7 +452,7 @@ var createPostWithImage = (text, newPost, author) => {
                             justify-content-end
                           " data-bs-toggle="collapse" data-bs-target="#collapsePost1" aria-expanded="false"
                         aria-controls="collapsePost1">
-                        <p class="m-0">0 Comments</p>
+                        <p class="commentsCounter m-0">0 Comments</p>
                       </div>
                     </h2>
                     <hr />
@@ -469,7 +491,7 @@ var createPostWithImage = (text, newPost, author) => {
                     <div id="collapsePost1" class="accordion-collapse collapse" aria-labelledby="headingTwo"
                       data-bs-parent="#accordionExample">
                       <hr />
-                      <div class="accordion-body">
+                      <div class="comments accordion-body">
                         <!-- create comment -->
                         <form class="d-flex my-1">
                           <!-- avatar -->
@@ -482,7 +504,10 @@ var createPostWithImage = (text, newPost, author) => {
                                 " />
                           </div>
                           <!-- input -->
-                          <input type="text" class="border-0 rounded-pill bg-gray" placeholder="Write a comment" />
+                          <input type="text" class="newCommentInput form-control border-0 rounded-pill bg-gray"
+                            placeholder="Write a comment" />
+                            <button type="button" class="newCommentInputBtn btn"><i class="bi bi-send-fill"></i></button>
+
                         </form>
                         <!-- end -->
                       </div>
@@ -496,7 +521,159 @@ var createPostWithImage = (text, newPost, author) => {
   timeline.insertBefore(newPost, timeline.children[1]);
   createPostModal.hide();
   updateDoms();
+}
 
+var createPostWithVideo = (text, newPost, author) => {
+  var video = URL.createObjectURL(newFile);
+  newPost.className = "bg-white p-4 rounded shadow mt-3";
+  newPost.innerHTML = `
+  <!-- author -->
+            <div class="d-flex justify-content-between">
+              <!-- avatar -->
+              <div class="d-flex">
+                <img src="https://source.unsplash.com/collection/happy-people" alt="avatar" class="rounded-circle me-2"
+                  style="width: 38px; height: 38px; object-fit: cover" />
+                <div>
+                  <p class="m-0 fw-bold">${author}</p>
+                  <span class="text-muted fs-7">${getCurrentDateTime()}</span>
+                </div>
+              </div>
+              <!-- edit -->
+              <i class="fas fa-ellipsis-h" type="button" id="post1Menu" data-bs-toggle="dropdown"
+                aria-expanded="false"></i>
+              <!-- edit menu -->
+              <ul class="dropdown-menu border-0 shadow" aria-labelledby="post1Menu">
+                <li class="d-flex align-items-center">
+                  <a class="
+                        dropdown-item
+                        d-flex
+                        justify-content-around
+                        align-items-center
+                        fs-7
+                      " href="#">
+                    Edit Post</a>
+                </li>
+                <li class="d-flex align-items-center">
+                  <a class="
+                        dropdown-item
+                        d-flex
+                        justify-content-around
+                        align-items-center
+                        fs-7
+                      " href="#">
+                    Delete Post</a>
+                </li>
+              </ul>
+            </div>
+            <!-- post content -->
+            <div class="mt-3">
+              <!-- content -->
+              <div>
+                <p>
+                  ${text}
+                </p>
+                <video alt="post image" class="img-fluid rounded" controls>
+                  <source src="${video}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+              </div>
+              <!-- likes & comments -->
+              <div class="post__comment mt-3 position-relative">
+                <!-- likes -->
+                <div class="
+                      d-flex
+                      align-items-center
+                      top-0
+                      start-0
+                      position-absolute
+                    " style="height: 50px; z-index: 5">
+                  <div class="me-2">
+                    <i class="text-primary fas fa-thumbs-up"></i>
+                  </div>
+                  <p class="likeCounter m-0 text-muted fs-7">0</p>
+                </div>
+                <!-- comments start-->
+                <div class="accordion" id="accordionExample">
+                  <div class="accordion-item border-0">
+                    <!-- comment collapse -->
+                    <h2 class="accordion-header" id="headingTwo">
+                      <div class="
+                            accordion-button
+                            collapsed
+                            pointer
+                            d-flex
+                            justify-content-end
+                          " data-bs-toggle="collapse" data-bs-target="#collapsePost1" aria-expanded="false"
+                        aria-controls="collapsePost1">
+                        <p class="commentsCounter m-0">0 Comments</p>
+                      </div>
+                    </h2>
+                    <hr />
+                    <!-- comment & like bar -->
+                    <div class="d-flex justify-content-around">
+                      <div class="
+                            likeButton
+                            dropdown-item
+                            rounded
+                            d-flex
+                            justify-content-center
+                            align-items-center
+                            pointer
+                            text-muted
+                            p-1
+                          ">
+                        <i class="fas fa-thumbs-up me-3"></i>
+                        <p class="m-0">Like</p>
+                      </div>
+                      <div class="
+                            dropdown-item
+                            rounded
+                            d-flex
+                            justify-content-center
+                            align-items-center
+                            pointer
+                            text-muted
+                            p-1
+                          " data-bs-toggle="collapse" data-bs-target="#collapsePost1" aria-expanded="false"
+                        aria-controls="collapsePost1">
+                        <i class="fas fa-comment-alt me-3"></i>
+                        <p class="m-0">Comment</p>
+                      </div>
+                    </div>
+                    <!-- comment expand -->
+                    <div id="collapsePost1" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                      data-bs-parent="#accordionExample">
+                      <hr />
+                      <div class="comments accordion-body">
+                        <!-- create comment -->
+                        <form class="d-flex my-1">
+                          <!-- avatar -->
+                          <div>
+                            <img src="https://source.unsplash.com/collection/happy-people" alt="avatar"
+                              class="rounded-circle me-2" style="
+                                  width: 38px;
+                                  height: 38px;
+                                  object-fit: cover;
+                                " />
+                          </div>
+                          <!-- input -->
+                          <input type="text" class="newCommentInput form-control border-0 rounded-pill bg-gray"
+                            placeholder="Write a comment" />
+                            <button type="button" class="newCommentInputBtn btn"><i class="bi bi-send-fill"></i></button>
+
+                        </form>
+                        <!-- end -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- end -->
+              </div>
+            </div>
+  `;
+  timeline.insertBefore(newPost, timeline.children[1]);
+  createPostModal.hide();
+  updateDoms();
 }
 
 
