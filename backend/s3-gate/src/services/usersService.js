@@ -8,7 +8,7 @@ const params = {
 const getAllUsersPhotos = async (s3) => {
   try {
     const data = await s3.listObjectsV2(params).promise();
-    const files = data.Contents.filter((item) => item.key !== "users_bucket/").map(
+    const files = data.Contents.map(
       (item) => `${config.s3Browser.previewUrl}/${item.Key}`
     );
     return { success: true, result: files };
@@ -17,12 +17,14 @@ const getAllUsersPhotos = async (s3) => {
   }
 };
 
-const getUserPhoto = (id) => {
-  id = parseInt(id);
-  const userIndex = users.findIndex((user) => user.id === id);
-  return userIndex !== -1
-    ? users[userIndex].user_profile_image
-    : { success: false, message: "User not found." };
+const getUserPhoto = async (s3, id) => {
+  try {
+    const key = `${params.Prefix}${id}.png`;
+    const data = await s3.getObject({ Bucket: params.Bucket, Key: key }).promise();
+    return { success: true, result: data.Body };
+  } catch (error) {
+    return { success: false, result: error.message };
+  }
 };
 
 const createUserPhoto = (id, user_profile_image) => {

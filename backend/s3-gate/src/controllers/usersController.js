@@ -5,10 +5,15 @@ const getAllUsersPhotos = (s3) => async (req, res) => {
   res.json(data);
 };
 
-const getUserPhoto = (req, res) => {
+const getUserPhoto = (s3) => async (req, res) => {
   const id = req.params.id;
-  const data = usersService.getUserPhoto(id);
-  res.json(data);
+  const data = await usersService.getUserPhoto(s3, id);
+  if (data.success) {
+    res.setHeader("Content-Type", "png"); // Set the appropriate content type for images
+    res.send(data.result);
+  } else {
+    res.json(data);
+  }
 };
 
 const createUserPhoto = (req, res) => {
