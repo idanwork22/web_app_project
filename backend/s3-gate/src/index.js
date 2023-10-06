@@ -16,7 +16,7 @@ const startServer = async () => {
     app.use(express.json({ limit: "10mb" }));
     app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
-    app.use("/posts", postsRoutes); // Routes
+    app.use("/posts", postsRoutes(s3)); // Routes
     app.use("/users", usersRoutes(s3)); // Routes
 
     app.use((req, res, next) => {

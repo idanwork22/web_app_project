@@ -1,30 +1,30 @@
 import postsService from "../services/postsService";
 
-const getAllPosts = (req, res) => {
+const getAllPosts = (s3) => async (req, res) => {
   const data = postsService.getAllPosts();
   res.json(data);
 };
 
-const getPostById = (req, res) => {
+const getPostById = (s3) => async (req, res) => {
   const id = req.params.id;
   const data = postsService.getPostById(id);
   res.json(data ? data : 'NotFound');
 };
 
-const createPost = (req, res) => {
+const createPost = (s3) => async (req, res) => {
   const data = req.body.data;
   const newPost = postsService.createPost({data});
   res.json(newPost);
 };
 
-const updatePost = (req, res) => {
+const updatePost = (s3) => async (req, res) => {
   const id = req.params.id;
   const data = req.body;
   const updatedPost = postsService.updatePost(id, data);
   res.json(updatedPost);
 };
 
-const deletePost = (req, res) => {
+const deletePost = (s3) => async (req, res) => {
   const id = req.params.id;
   const deletedPost = postsService.deletePost(id);
   res.json(deletedPost);
