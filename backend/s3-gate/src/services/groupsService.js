@@ -17,9 +17,9 @@ const getAllGroups = async (s3) => {
   }
 };
 
-const getGroupById = async (s3, id, contentType) => {
+const getGroupById = async (s3, id) => {
   try {
-    const key = `${params.Prefix}${id}.${contentType}`;
+    const key = `${params.Prefix}${id}.png`;
     const data = await s3
       .getObject({ Bucket: params.Bucket, Key: key })
       .promise();
