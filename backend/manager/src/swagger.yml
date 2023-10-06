@@ -8,12 +8,16 @@ paths:
   /users:
     get:
       summary: Get all users
+      tags:
+        - users
       responses:
         "200":
           description: Successful response
 
     post:
       summary: Create a new user
+      tags:
+        - users
       requestBody:
         content:
           application/json:
@@ -26,6 +30,8 @@ paths:
   /users/{id}:
     get:
       summary: Get user by ID
+      tags:
+        - users
       parameters:
         - in: path
           name: id
@@ -38,6 +44,8 @@ paths:
 
     put:
       summary: Update user by ID
+      tags:
+        - users
       parameters:
         - in: path
           name: id
@@ -55,6 +63,8 @@ paths:
 
     delete:
       summary: Delete user by ID
+      tags:
+        - users
       parameters:
         - in: path
           name: id
@@ -68,6 +78,8 @@ paths:
   /users/login:
     post:
       summary: Check if user exists (login)
+      tags:
+        - users
       requestBody:
         content:
           application/json:
@@ -80,6 +92,8 @@ paths:
   /users/username/{username}:
     get:
       summary: Get user by username
+      tags:
+        - users
       parameters:
         - in: path
           name: username
@@ -89,6 +103,77 @@ paths:
       responses:
         "200":
           description: Successful response
+
+  /posts:
+    get:
+      summary: Get all posts
+      tags:
+        - posts
+      responses:
+        "200":
+          description: Successful response
+
+    post:
+      summary: Create a new post
+      tags:
+        - posts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/newPost"
+      responses:
+        "200":
+          description: Successful response
+
+  /posts/{id}:
+    get:
+      summary: Get post by ID
+      tags:
+        - posts
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+
+    put:
+      summary: Update post by ID
+      tags:
+        - posts
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/updatePost"
+      responses:
+        "200":
+          description: Successful response
+
+    delete:
+      summary: Delete post by ID
+      tags:
+        - posts
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+
 
 components:
   schemas:
@@ -131,4 +216,35 @@ components:
           required: true
         user_phone_number:
           type: string
+          required: true
+    newPost:
+      type: object
+      properties:
+        user_creator_id:
+          type: string
+          required: true
+        post_content:
+          type: string
+          required: true
+        post_image:
+          type: string
+          required: true
+    updatePost:
+      type: object
+      properties:
+        post_content:
+          type: string
+          required: true
+        post_image:
+          type: string
+          required: true
+        likes:
+          type: array
+          items:
+            type: string
+          required: true
+        comments:
+          type: array
+          items:
+            type: string
           required: true
