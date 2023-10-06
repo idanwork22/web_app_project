@@ -66,7 +66,8 @@ const deletePost = async (id) => {
   try {
     const response = await axios.delete(`${config.dataGate.url}/posts/${id}`);
     if (response.data.success) {
-      await axios.delete(`${config.s3Gate.url}/posts/${id}/photo`);
+      console.log('s3 delete post')
+      // await axios.delete(`${config.s3Gate.url}/posts/${id}`);
     }
     return response.data;
   } catch (error) {
