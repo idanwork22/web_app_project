@@ -1,6 +1,7 @@
 import express from "express";
 import postsRoutes from "./routes/postsRoutes";
 import usersRoutes from "./routes/usersRouter";
+import groupsRoutes from "./routes/groupsRoutes";
 import config from "./config/config";
 import AWS from "aws-sdk";
 import cors from 'cors'
@@ -20,6 +21,7 @@ const startServer = async () => {
 
     app.use("/posts", postsRoutes(s3)); // Routes
     app.use("/users", usersRoutes(s3)); // Routes
+    app.use("/groups", groupsRoutes(s3)); // Routes
 
     app.use((req, res, next) => {
       res.setHeader("Access-Control-Allow-Origin", "http://localhost:8080"); // Replace with your actual frontend URL
