@@ -17,7 +17,7 @@ const getAllPosts = async (s3) => {
   }
 };
 
-const getPostById = async (s3, id, contentType ) => {
+const getPostById = async (s3, id, contentType) => {
   try {
     const key = `${params.Prefix}${id}.${contentType}`;
     const data = await s3
@@ -29,11 +29,23 @@ const getPostById = async (s3, id, contentType ) => {
   }
 };
 
-const createPost = (userData) => {
-  const id = posts.length + 1;
-  const newPost = { id, ...userData };
-  newPost.data && posts.push(newPost);
-  return newPost.data ? newPost : `Plesae enter "data" in body`;
+const createPost = async (s3, id, { post_image, contentType }) => {
+  try {
+    const fileContent = Buffer.from(post_image, "base64");
+    const newPost = {
+      Bucket: params.Bucket,
+      Key: `${params.Prefix}${id}.${contentType}`,
+      Body: fileContent,
+      ContentType: contentType,
+    };
+    await s3.upload(newPost).promise();
+    return {
+      success: true,
+      result: `File uploaded successfully - ${id}.${contentType}`,
+    };
+  } catch (error) {
+    return { success: false, result: error.message };
+  }
 };
 
 const updatePost = (id, userData) => {

@@ -21,9 +21,26 @@ const getPostById = (s3) => async (req, res) => {
 };
 
 const createPost = (s3) => async (req, res) => {
-  const data = req.body.data;
-  const newPost = postsService.createPost({ data });
-  res.json(newPost);
+  const id = req.params.id;
+  const postData = {
+    post_image: req.body.post_image,
+    contentType: req.body.contentType,
+  };
+  const isAllDataAvailable = Object.values(postData).every(Boolean);
+
+  if (postData.contentType === "png" || postData.contentType === "mp4") {
+    res.json(
+      isAllDataAvailable
+        ? await postsService.createPost(s3, id, postData)
+        : { success: false, result: "Incomplete post data provided." }
+    );
+  } else {
+    res.json({
+      success: false,
+      result:
+        "Incomplete post data provided, please enter contentType(png/mp4)",
+    });
+  }
 };
 
 const updatePost = (s3) => async (req, res) => {

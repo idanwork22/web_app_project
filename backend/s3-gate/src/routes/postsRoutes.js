@@ -6,7 +6,7 @@ const postRoutes = (s3) => {
 
   router.get("/", postsController.getAllPosts(s3));
   router.get("/:id", postsController.getPostById(s3));
-  router.post("/", postsController.createPost(s3));
+  router.post("/:id", postsController.createPost(s3));
   router.put("/:id", postsController.updatePost(s3));
   router.delete("/:id", postsController.deletePost(s3));
 
