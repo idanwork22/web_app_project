@@ -3,12 +3,14 @@ import userRoutes from "./routes/userRoutes";
 import config from "./config/config";
 import { connect } from "./db.js";
 import postRoutes from "./routes/postRoutes";
+import cors from 'cors'
 
 const startServer = async () => {
   const db = await connect();
   const app = express();
   app.use(express.json({ limit: "10mb" }));
   app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+  app.use(cors());
 
   app.use("/users", userRoutes(db)); // Routes
   app.use("/posts", postRoutes(db)); // Routes

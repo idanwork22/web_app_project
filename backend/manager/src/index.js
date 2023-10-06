@@ -5,11 +5,13 @@ import config from './config/config';
 import swaggerUi from 'swagger-ui-express'
 import YAML from 'yamljs'
 import path from 'path';
+import cors from 'cors'
 
 const swaggerDocument = YAML.load(path.join(__dirname, './swagger.yml'));
 const app = express();
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+app.use(cors());
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
