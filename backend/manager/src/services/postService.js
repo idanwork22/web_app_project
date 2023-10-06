@@ -47,13 +47,14 @@ const createPost = async (postData) => {
 
 const updatePost = async (id, postData) => {
   try {
-    const { post_profile_image, ...rest } = postData;
+    const { post_image, ...rest } = postData;
     const response = await axios.put(
       `${config.dataGate.url}/posts/${id}`,
       rest
     );
-    if (response.status && post_profile_image) {
-      await axios.put(`${config.s3Gate.url}/posts/${id}/photo`, postData);
+    if (response.data.success && post_image) {
+      console.log("change image in s3");
+      //await axios.put(`${config.s3Gate.url}/posts/${id}/photo`, {post_image});
     }
     return response.data;
   } catch (error) {

@@ -51,10 +51,10 @@ const updateUser = async (id, userData) => {
       `${config.dataGate.url}/users/${id}`,
       rest
     );
-    if (response.status && user_profile_image){
+    if (response.data.success && user_profile_image){
       await axios.put(
         `${config.s3Gate.url}/users/${id}/photo`,
-        userData
+        {user_profile_image}
       );
     }
     return response.data;
