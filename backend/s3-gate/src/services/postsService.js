@@ -48,16 +48,40 @@ const createPost = async (s3, id, { post_image, contentType }) => {
   }
 };
 
-const updatePost = (id, userData) => {
-  id = parseInt(id);
-  const postIndex = posts.findIndex((post) => post.id === id);
+const updatePost = async (s3, id, { post_image, contentType }) => {
+  try {
+    // Step 1: Check if the object exists
+    try {
+      await s3
+        .headObject({ Bucket: params.Bucket, Key: `${params.Prefix}${id}.${contentType}` })
+        .promise();
+    } catch (err) {
+      if (err.code === "NotFound") {
+        return { success: false, result: `File with id ${id}.${contentType} not found.` };
+      } else {
+        throw err; // Re-throw other errors
+      }
+    }
 
-  if (postIndex !== -1) {
-    posts[postIndex] = { ...posts[postIndex], ...userData };
-    return posts[postIndex];
+    // Step 2: Download the file
+    const fileContent = Buffer.from(post_image, "base64");
+    const newPhoto = {
+      Bucket: params.Bucket,
+      Key: `${params.Prefix}${id}.${contentType}`,
+      Body: fileContent,
+      ContentType: contentType, // Set the content type appropriately
+    };
+
+    // Step 3: Upload the updated file
+    await s3.upload(newPhoto).promise();
+
+    return {
+      success: true,
+      result: `File updated successfully - ${id}.${contentType}`,
+    };
+  } catch (error) {
+    return { success: false, result: error.message };
   }
-
-  return null;
 };
 
 const deletePost = async (s3, id, contentType) => {
