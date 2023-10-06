@@ -60,16 +60,17 @@ const updatePost = (id, userData) => {
   return null;
 };
 
-const deletePost = (id) => {
-  id = parseInt(id);
-  const postIndex = posts.findIndex((post) => post.id === id);
-
-  if (postIndex !== -1) {
-    const deletedPost = posts.splice(postIndex, 1);
-    return deletedPost[0];
+const deletePost = async (s3, id, contentType) => {
+  try {
+    const toDelete = {
+      Bucket: params.Bucket,
+      Key: `${params.Prefix}${id}.${contentType}`
+    };
+    await s3.deleteObject(toDelete).promise();
+    return { success: true, result: 'File deleted successfully' };
+  } catch (error) {
+    return { success: false, result: error.message };
   }
-
-  return null;
 };
 
 module.exports = {

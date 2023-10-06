@@ -52,8 +52,18 @@ const updatePost = (s3) => async (req, res) => {
 
 const deletePost = (s3) => async (req, res) => {
   const id = req.params.id;
-  const deletedPost = postsService.deletePost(id);
-  res.json(deletedPost);
+  const contentType = req.body.contentType;
+
+  if (contentType === "png" || contentType === "mp4") {
+    const deletedPost = await postsService.deletePost(s3, id, contentType);
+    res.json(deletedPost);
+  } else {
+    res.json({
+      success: false,
+      result:
+        "Incomplete get post data provided, please enter contentType(png/mp4)",
+    });
+  }
 };
 
 module.exports = {
