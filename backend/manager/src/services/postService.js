@@ -33,7 +33,7 @@ const createPost = async (postData) => {
         const postId = response.data.result.insertedId;
         await axios.post(`${config.s3Gate.url}/posts/${postId}`, postData);
         await axios.put(`${config.dataGate.url}/posts/${postId}`, {
-          post_image: `https://webappproject.s3.us-east-1.amazonaws.com/posts_bucket/${postId}.png`,
+          post_image: `https://webappproject.s3.us-east-1.amazonaws.com/posts_bucket/${postId}.${postData.contentType}`,
         });
       }
       return response.data;
@@ -47,14 +47,29 @@ const createPost = async (postData) => {
 
 const updatePost = async (id, postData) => {
   try {
-    const { post_image, ...rest } = postData;
+    const { post_image, contentType, ...rest } = postData;
     const response = await axios.put(
       `${config.dataGate.url}/posts/${id}`,
       rest
     );
     if (response.data.success && post_image) {
-      console.log("change image in s3");
-      //await axios.put(`${config.s3Gate.url}/posts/${id}/photo`, {post_image});
+      await axios.delete(`${config.s3Gate.url}/posts/${id}`, {
+        headers: {
+          contentType: "png",
+        },
+      });
+      await axios.delete(`${config.s3Gate.url}/posts/${id}`, {
+        headers: {
+          contentType: "mp4",
+        },
+      });
+      await axios.post(`${config.s3Gate.url}/posts/${id}`, {
+        post_image,
+        contentType,
+      });
+      await axios.put(`${config.dataGate.url}/posts/${id}`, {
+        post_image: `https://webappproject.s3.us-east-1.amazonaws.com/posts_bucket/${id}.${contentType}`,
+      });
     }
     return response.data;
   } catch (error) {
@@ -68,12 +83,12 @@ const deletePost = async (id) => {
     if (response.data.success) {
       await axios.delete(`${config.s3Gate.url}/posts/${id}`, {
         headers: {
-          'contentType': "png",
+          contentType: "png",
         },
       });
       await axios.delete(`${config.s3Gate.url}/posts/${id}`, {
         headers: {
-          'contentType': "mp4",
+          contentType: "mp4",
         },
       });
     }

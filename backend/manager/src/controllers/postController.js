@@ -11,13 +11,33 @@ const getPostById = async (req, res) => {
 };
 
 const createPost = async (req, res) => {
-  const newPost = await postService.createPost(req.body);
-  res.json(newPost);
+  if (req.body.contentType !== "mp4" && req.body.contentType !== "png") {
+    res.json({
+      success: false,
+      result:
+        "Incomplete post data provided, please enter contentType(png/mp4)",
+    });
+  } else {
+    const newPost = await postService.createPost(req.body);
+    res.json(newPost);
+  }
 };
 
 const updatePost = async (req, res) => {
-  const updatedPost = await postService.updatePost(req.params.id, req.body);
-  res.json(updatedPost);
+  if (
+    req.body.post_image &&
+    req.body.contentType != "mp4" &&
+    req.body.contentType != "png"
+  ) {
+    res.json({
+      success: false,
+      result:
+        "Incomplete post data provided, please enter contentType(png/mp4)",
+    });
+  } else {
+    const updatedPost = await postService.updatePost(req.params.id, req.body);
+    res.json(updatedPost);
+  }
 };
 
 const deletePost = async (req, res) => {
