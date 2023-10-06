@@ -7,13 +7,22 @@ const getAllPosts = (s3) => async (req, res) => {
 
 const getPostById = (s3) => async (req, res) => {
   const id = req.params.id;
-  const data = postsService.getPostById(id);
-  res.json(data ? data : 'NotFound');
+  const contentType = req.body.contentType;
+  if (contentType === "png" || contentType === "mp4") {
+    const data = await postsService.getPostById(s3, id, contentType);
+    res.json(data);
+  } else {
+    res.json({
+      success: false,
+      result:
+        "Incomplete get post data provided, please enter contentType(png/mp4)",
+    });
+  }
 };
 
 const createPost = (s3) => async (req, res) => {
   const data = req.body.data;
-  const newPost = postsService.createPost({data});
+  const newPost = postsService.createPost({ data });
   res.json(newPost);
 };
 

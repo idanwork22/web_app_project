@@ -17,8 +17,17 @@ const getAllPosts = async (s3) => {
   }
 };
 
-const getPostById = (id) => 
-posts.find((post) => post.id === parseInt(id));
+const getPostById = async (s3, id, contentType ) => {
+  try {
+    const key = `${params.Prefix}${id}.${contentType}`;
+    const data = await s3
+      .getObject({ Bucket: params.Bucket, Key: key })
+      .promise();
+    return { success: true, result: `${config.s3Browser.previewUrl}/${key}` };
+  } catch (error) {
+    return { success: false, result: error.message };
+  }
+};
 
 const createPost = (userData) => {
   const id = posts.length + 1;
