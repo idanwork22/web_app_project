@@ -92,19 +92,25 @@ const updateGroupInfo = async (db, id, groupData) => {
   }
 };
 
-const deleteGroup = async (id) => {
+const deleteGroup = async (db, id) => {
   try {
-    const response = await axios.delete(`${config.dataGate.url}/groups/${id}`);
-    if (response.data.success) {
-      await axios.delete(`${config.s3Gate.url}/groups/${id}`, {
-        headers: {
-          contentType: "png",
-        },
-      });
+    const result = await db
+      .collection("groups")
+      .deleteOne({ _id: new ObjectId(id) });
+
+    if (result.deletedCount !== 0) {
+      return {
+        success: true,
+        result: `Document with ID ${id} deleted successfully`,
+      };
+    } else {
+      return {
+        success: false,
+        result: `Document with ID ${id} not found`,
+      };
     }
-    return response.data;
   } catch (error) {
-    return error;
+    return { success: false, result: error.message };
   }
 };
 

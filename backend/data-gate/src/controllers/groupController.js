@@ -69,7 +69,7 @@ const removeUserFromGroup = (db) => async (req, res) => {
 };
 
 const deleteGroup = (db) => async (req, res) => {
-  const deletedGroup = await groupService.deleteGroup(req.params.id);
+  const deletedGroup = await groupService.deleteGroup(db, req.params.id);
   res.json(deletedGroup);
 };
 
