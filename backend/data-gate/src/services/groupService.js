@@ -92,8 +92,34 @@ const deleteGroup = async (id) => {
   }
 };
 
-const addUserToGroup = async (id, user_id) => {
-  // TODO
+const addUserToGroup = async (db, id, user_id) => {
+  try {
+    // Check if the group exists
+    const group = await db.collection('groups').findOne({ _id: new ObjectId(id) });
+    if (!group) {
+      return { success: false, result: 'Group not found' };
+    }
+
+    // Check if the user exists
+    const user = await db.collection('users').findOne({ _id: new ObjectId(user_id) });
+    if (!user) {
+      return { success: false, result: 'User not found' };
+    }
+
+    // Add the user to the group
+    const result = await db.collection('groups').updateOne(
+      { _id: new ObjectId(id) },
+      { $addToSet: { group_members: user_id } }
+    );
+
+    if (result.modifiedCount === 0) {
+      return { success: false, result: 'User is already a member of this group' };
+    }
+
+    return { success: true, result: 'User added to group successfully' };
+  } catch (error) {
+    return { success: false, result: error.message };
+  }
 };
 
 const removeUserFromGroup = async (id, user_id) => {

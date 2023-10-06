@@ -43,8 +43,12 @@ const updateGroupInfo = (db) => async (req, res) => {
 };
 
 const addUserToGroup = (db) => async (req, res) => {
-  const deletedPost = await groupService.addUserToGroup(req.params.id);
-  res.json(deletedPost);
+  const data = await groupService.addUserToGroup(
+    db,
+    req.params.id,
+    req.params.user_id
+  );
+  res.json(data);
 };
 
 const removeUserFromGroup = (db) => async (req, res) => {
