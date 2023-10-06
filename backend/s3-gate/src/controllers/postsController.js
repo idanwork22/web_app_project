@@ -1,7 +1,7 @@
 import postsService from "../services/postsService";
 
 const getAllPosts = (s3) => async (req, res) => {
-  const data = postsService.getAllPosts();
+  const data = await postsService.getAllPosts(s3);
   res.json(data);
 };
 

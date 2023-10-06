@@ -1,11 +1,21 @@
-const posts = [
-  { id: 1, data: "Yoav POST"},
-  { id: 2, data: "Idan POST"},
-  { id: 3, data: "Omer POST"},
-  { id: 4, data: "Raz POST"},
-];
+import config from "../config/config";
 
-const getAllPosts = () => posts;
+const params = {
+  Bucket: config.s3Browser.bucket,
+  Prefix: "posts_bucket/",
+};
+
+const getAllPosts = async (s3) => {
+  try {
+    const data = await s3.listObjectsV2(params).promise();
+    const files = data.Contents.map(
+      (item) => `${config.s3Browser.previewUrl}/${item.Key}`
+    );
+    return { success: true, result: files };
+  } catch (error) {
+    return { success: false, result: error.message };
+  }
+};
 
 const getPostById = (id) => 
 posts.find((post) => post.id === parseInt(id));
