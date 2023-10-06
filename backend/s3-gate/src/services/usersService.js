@@ -23,7 +23,7 @@ const getUserPhoto = async (s3, id) => {
     const data = await s3
       .getObject({ Bucket: params.Bucket, Key: key })
       .promise();
-    return { success: true, result: data.Body };
+    return { success: true, result: `${config.s3Browser.previewUrl}/${key}` };
   } catch (error) {
     return { success: false, result: error.message };
   }
