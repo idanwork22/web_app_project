@@ -1,6 +1,8 @@
 import express from 'express';
 import userRoutes from './routes/userRoutes';
 import postRoutes from './routes/postRouter';
+import groupRouter from './routes/groupRouter';
+
 import config from './config/config';
 import swaggerUi from 'swagger-ui-express'
 import YAML from 'yamljs'
@@ -17,6 +19,7 @@ app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use('/users', userRoutes); // Routes
 app.use('/posts', postRoutes); // Routes
+app.use('/groups', groupRouter); // Routes
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', `http://${config.manager.host}:${config.manager.port}`); // Replace with your actual frontend URL
