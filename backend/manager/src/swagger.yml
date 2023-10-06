@@ -229,6 +229,10 @@ components:
         post_image:
           type: string
           required: true
+        contentType:
+          type: string
+          required: true
+          example: "mp4/png"
     updatePost:
       type: object
       properties:
@@ -248,3 +252,7 @@ components:
           items:
             type: string
           required: true
+        contentType:
+          type: string
+          required: true
+          example: "mp4/png"

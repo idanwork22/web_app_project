@@ -31,7 +31,7 @@ const createPost = async (postData) => {
       );
       if (response.data.success) {
         const postId = response.data.result.insertedId;
-        //await axios.post(`${config.s3Gate.url}/posts/${postId}`, postData);
+        await axios.post(`${config.s3Gate.url}/posts/${postId}`, postData);
         await axios.put(`${config.dataGate.url}/posts/${postId}`, {
           post_image: `https://webappproject.s3.us-east-1.amazonaws.com/posts_bucket/${postId}.png`,
         });
