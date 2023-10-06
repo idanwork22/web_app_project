@@ -8,15 +8,16 @@ console.log(selectedGroupElement)
 groupButtonsSelectors.forEach(function (button) {
   button.addEventListener("click", () => {
     selectedGroupElement.innerHTML = `${button.innerText} &#8226; Last Activity`
-    isGroupAdmin(button.innerText,1234); //TODO: Add really user id from backend
+    isGroupAdmin(button.innerText, 1234); //TODO: Add really user id from backend
   });
 });
 
 
 
 //insights
-var insightDiv = document.querySelector('.insight');
-var insights = () => {
+var insightDiv = document.querySelector('#d3-container');
+var insightDivText = document.querySelector('.insightText');
+var presentInsights = () => {
 
   const data = [
     { name: 'Posts', score: 10 },
@@ -71,13 +72,20 @@ var insights = () => {
   svg.append("g").call(xAxis);
   svg.append("g").call(yAxis);
   svg.node();
+
+  insightDivText.innerHTML='Insights'
 }
 
-insights();
-// var isGroupAdmin=(groupname,userId)=>{//TODO: Add really user id from backend
-//   if(groupname ==='Group 1'){
-//     insights();
-//   }else{
-//     insightDiv.classList.add('disabled')
-//   }
-// }
+presentInsights();
+
+var isGroupAdmin = (groupname, userId) => {//TODO: Add really user id from backend
+  if (groupname === 'Group 1') {
+    presentInsights()();
+  } else {
+    if (insightDiv.firstChild) {
+      insightDiv.removeChild(insightDiv.firstChild)
+      insightDivText.innerHTML=''
+    }
+
+  }
+}
