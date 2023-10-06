@@ -11,7 +11,7 @@ const groupRoutes = (db) => {
   router.post("/:id/user/:user_id", groupController.addUserToGroup(db));
   router.put("/:id", groupController.updateGroupInfo(db));
   router.delete("/:id", groupController.deleteGroup(db));
-  router.delete("/:id/:user_id", groupController.removeUserFromGroup(db));
+  router.delete("/:id/user/:user_id", groupController.removeUserFromGroup(db));
 
   return router;
 };

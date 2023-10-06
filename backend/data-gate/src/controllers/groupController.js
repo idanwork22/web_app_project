@@ -50,7 +50,11 @@ const updateGroupInfo = (db) => async (req, res) => {
     return acc;
   }, {});
 
-  const updatedGroup = await groupService.updateGroupInfo(db, id, filteredGroupData);
+  const updatedGroup = await groupService.updateGroupInfo(
+    db,
+    id,
+    filteredGroupData
+  );
   res.json(updatedGroup);
 };
 
@@ -64,7 +68,11 @@ const addUserToGroup = (db) => async (req, res) => {
 };
 
 const removeUserFromGroup = (db) => async (req, res) => {
-  const deletedGroup = await groupService.removeUserFromGroup(req.params.id);
+  const deletedGroup = await groupService.removeUserFromGroup(
+    db,
+    req.params.id,
+    req.params.user_id
+  );
   res.json(deletedGroup);
 };
 

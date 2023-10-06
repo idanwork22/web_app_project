@@ -153,8 +153,38 @@ const addUserToGroup = async (db, id, user_id) => {
   }
 };
 
-const removeUserFromGroup = async (id, user_id) => {
-  // TODO
+const removeUserFromGroup = async (db, id, user_id) => {
+  try {
+    // Check if the group exists
+    const group = await db
+      .collection("groups")
+      .findOne({ _id: new ObjectId(id) });
+    if (!group) {
+      return { success: false, result: "Group not found" };
+    }
+
+    // Check if the user is a member of the group
+    if (!group.group_members.includes(user_id)) {
+      return { success: false, result: 'User is not a member of this group' };
+    }
+
+    // Remove the user from the group
+    const result = await db.collection('groups').updateOne(
+      { _id: new ObjectId(id) },
+      { $pull: { group_members: user_id } }
+    );
+
+    if (result.modifiedCount === 0) {
+      return {
+        success: false,
+        result: "User is already removed from this group",
+      };
+    }
+
+    return { success: true, result: "User removed from group successfully" };
+  } catch (error) {
+    return { success: false, result: error.message };
+  }
 };
 
 module.exports = {
