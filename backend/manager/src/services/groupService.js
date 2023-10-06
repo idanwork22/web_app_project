@@ -1,7 +1,7 @@
 import config from "../config/config";
 import axios from "axios";
 
-const getAllPosts = async () => {
+const getAllGroups = async () => {
   try {
     const response = await axios.get(`${config.dataGate.url}/posts`);
     return response.data;
@@ -9,8 +9,7 @@ const getAllPosts = async () => {
     return error;
   }
 };
-
-const getPostById = async (id) => {
+const getAllUserRelatedGroups = async (id) => {
   try {
     const response = await axios.get(`${config.dataGate.url}/posts/${id}`);
     return response.data;
@@ -19,7 +18,16 @@ const getPostById = async (id) => {
   }
 };
 
-const createPost = async (postData) => {
+const getGroupById = async (id) => {
+  try {
+    const response = await axios.get(`${config.dataGate.url}/posts/${id}`);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+const createGroup = async (postData) => {
   try {
     const checUserId = await axios.get(
       `${config.dataGate.url}/users/${postData.user_creator_id}`
@@ -45,7 +53,7 @@ const createPost = async (postData) => {
   }
 };
 
-const updatePost = async (id, postData) => {
+const updateGroupInfo = async (id, postData) => {
   try {
     const { post_image, ...rest } = postData;
     const response = await axios.put(
@@ -62,7 +70,7 @@ const updatePost = async (id, postData) => {
   }
 };
 
-const deletePost = async (id) => {
+const deleteGroup = async (id) => {
   try {
     const response = await axios.delete(`${config.dataGate.url}/posts/${id}`);
     if (response.data.success) {
@@ -83,10 +91,54 @@ const deletePost = async (id) => {
   }
 };
 
+const addUserToGroup = async (id) => {
+  try {
+    const response = await axios.delete(`${config.dataGate.url}/posts/${id}`);
+    if (response.data.success) {
+      await axios.delete(`${config.s3Gate.url}/posts/${id}`, {
+        headers: {
+          'contentType': "png",
+        },
+      });
+      await axios.delete(`${config.s3Gate.url}/posts/${id}`, {
+        headers: {
+          'contentType': "mp4",
+        },
+      });
+    }
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+const removeUserFromGroup = async (id) => {
+  try {
+    const response = await axios.delete(`${config.dataGate.url}/posts/${id}`);
+    if (response.data.success) {
+      await axios.delete(`${config.s3Gate.url}/posts/${id}`, {
+        headers: {
+          'contentType': "png",
+        },
+      });
+      await axios.delete(`${config.s3Gate.url}/posts/${id}`, {
+        headers: {
+          'contentType': "mp4",
+        },
+      });
+    }
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
 module.exports = {
-  getAllPosts,
-  getPostById,
-  createPost,
-  updatePost,
-  deletePost,
+  getAllGroups,
+  removeUserFromGroup,
+  addUserToGroup,
+  getGroupById,
+  createGroup,
+  deleteGroup,
+  updateGroupInfo,
+  getAllUserRelatedGroups
 };
