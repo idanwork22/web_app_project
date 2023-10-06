@@ -1,41 +1,47 @@
 import groupService from "../services/groupService";
 
-const getAllGroups = async (req, res) => {
-  const data = await groupService.getAllGroups();
+const getAllGroups = (db) => async (req, res) => {
+  const data = await groupService.getAllGroups(db);
   res.json(data);
 };
 
-const getAllUserRelatedGroups = async (req, res) => {
-  const data = await groupService.getAllUserRelatedGroups();
+const getAllUserRelatedGroups = (db) => async (req, res) => {
+  const data = await groupService.getAllUserRelatedGroups(
+    db,
+    req.params.user_id
+  );
   res.json(data);
 };
 
-const getGroupById = async (req, res) => {
-  const data = await groupService.getGroupById(req.params.id);
+const getGroupById = (db) => async (req, res) => {
+  const data = await groupService.getGroupById(db, req.params.id);
   res.json(data);
 };
 
-const createGroup = async (req, res) => {
+const createGroup = (db) => async (req, res) => {
   const newPost = await groupService.createGroup(req.body);
   res.json(newPost);
 };
 
-const updateGroupInfo = async (req, res) => {
-  const updatedPost = await groupService.updateGroupInfo(req.params.id, req.body);
+const updateGroupInfo = (db) => async (req, res) => {
+  const updatedPost = await groupService.updateGroupInfo(
+    req.params.id,
+    req.body
+  );
   res.json(updatedPost);
 };
 
-const addUserToGroup = async (req, res) => {
+const addUserToGroup = (db) => async (req, res) => {
   const deletedPost = await groupService.addUserToGroup(req.params.id);
   res.json(deletedPost);
 };
 
-const removeUserFromGroup = async (req, res) => {
+const removeUserFromGroup = (db) => async (req, res) => {
   const deletedPost = await groupService.removeUserFromGroup(req.params.id);
   res.json(deletedPost);
 };
 
-const deleteGroup = async (req, res) => {
+const deleteGroup = (db) => async (req, res) => {
   const deletedPost = await groupService.deleteGroup(req.params.id);
   res.json(deletedPost);
 };
@@ -48,5 +54,5 @@ module.exports = {
   createGroup,
   deleteGroup,
   updateGroupInfo,
-  getAllUserRelatedGroups
+  getAllUserRelatedGroups,
 };

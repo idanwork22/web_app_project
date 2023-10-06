@@ -1,29 +1,45 @@
-import config from "../config/config";
-import axios from "axios";
+import { ObjectId } from "mongodb";
 
-const getAllGroups = async () => {
+const getAllGroups = async (db) => {
   try {
-    const response = await axios.get(`${config.dataGate.url}/posts`);
-    return response.data;
+    const result = await db.collection("groups").find({}).toArray();
+    return { success: true, result: result };
   } catch (error) {
-    return error;
-  }
-};
-const getAllUserRelatedGroups = async (id, user_id) => {
-  try {
-    const response = await axios.get(`${config.dataGate.url}/posts/${id}/${user_id}`);
-    return response.data;
-  } catch (error) {
-    return error;
+    return { success: false, result: error.message };
   }
 };
 
-const getGroupById = async (id) => {
+const getAllUserRelatedGroups = async (db, user_id) => {
   try {
-    const response = await axios.get(`${config.dataGate.url}/posts/${id}`);
-    return response.data;
+    const groups = await db
+      .collection("groups")
+      .find({
+        group_members: { $in: [user_id] },
+      })
+      .toArray();
+    return { success: true, result: groups };
   } catch (error) {
-    return error;
+    return { success: false, result: error.message };
+  }
+};
+
+const getGroupById = async (db, id) => {
+  try {
+    const result = await db
+      .collection("groups")
+      .findOne({ _id: new ObjectId(id) });
+    return result
+      ? { success: true, result: result }
+      : { success: false, result: "Group not found." };
+  } catch (error) {
+    if (
+      error.message ===
+      "input must be a 24 character hex string, 12 byte Uint8Array, or an integer"
+    ) {
+      return { success: false, result: "Invalid ID format" };
+    } else {
+      return { success: false, result: error.message }; // Handle other errors
+    }
   }
 };
 
@@ -75,7 +91,7 @@ const deleteGroup = async (id) => {
     if (response.data.success) {
       await axios.delete(`${config.s3Gate.url}/groups/${id}`, {
         headers: {
-          'contentType': "png",
+          contentType: "png",
         },
       });
     }
@@ -86,7 +102,7 @@ const deleteGroup = async (id) => {
 };
 
 const addUserToGroup = async (id, user_id) => {
-   // TODO
+  // TODO
 };
 
 const removeUserFromGroup = async (id, user_id) => {
@@ -101,5 +117,5 @@ module.exports = {
   createGroup,
   deleteGroup,
   updateGroupInfo,
-  getAllUserRelatedGroups
+  getAllUserRelatedGroups,
 };
