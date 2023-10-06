@@ -10,7 +10,7 @@ const getGroupById = (s3) => async (req, res) => {
   const data = await groupsService.getGroupById(s3, id, contentType);
   res.json(data);
   } 
-};
+;
 
 const createGroup = (s3) => async (req, res) => {
   const id = req.params.id;
