@@ -60,19 +60,35 @@ const createGroup = async (db, groupData) => {
   }
 };
 
-const updateGroupInfo = async (id, groupData) => {
+const updateGroupInfo = async (db, id, groupData) => {
   try {
-    const { axios, ...rest } = groupData;
-    const response = await axios.put(
-      `${config.dataGate.url}/groups/${id}`,
-      rest
-    );
-    if (response.data.success && axios) {
-      console.log("change image in s3");
+    const updateDoc = {
+      $set: groupData,
+    };
+    if (Object.keys(groupData).includes("user_manager_id")) {
+      const checkUserExists = await db
+        .collection("users")
+        .findOne({ _id: new ObjectId(groupData.user_manager_id) });
+      if (!checkUserExists) {
+        return { success: false, result: "admin user doesnt exists" };
+      }
     }
-    return response.data;
+    const result = await db
+      .collection("groups")
+      .updateOne({ _id: new ObjectId(id) }, updateDoc);
+    if (result.matchedCount !== 0) {
+      return {
+        success: true,
+        result: `Document with ID ${id} updated successfully`,
+      };
+    } else {
+      return {
+        success: false,
+        result: `Document with ID ${id} not found`,
+      };
+    }
   } catch (error) {
-    return error;
+    return { success: false, result: error.message };
   }
 };
 
@@ -95,28 +111,37 @@ const deleteGroup = async (id) => {
 const addUserToGroup = async (db, id, user_id) => {
   try {
     // Check if the group exists
-    const group = await db.collection('groups').findOne({ _id: new ObjectId(id) });
+    const group = await db
+      .collection("groups")
+      .findOne({ _id: new ObjectId(id) });
     if (!group) {
-      return { success: false, result: 'Group not found' };
+      return { success: false, result: "Group not found" };
     }
 
     // Check if the user exists
-    const user = await db.collection('users').findOne({ _id: new ObjectId(user_id) });
+    const user = await db
+      .collection("users")
+      .findOne({ _id: new ObjectId(user_id) });
     if (!user) {
-      return { success: false, result: 'User not found' };
+      return { success: false, result: "User not found" };
     }
 
     // Add the user to the group
-    const result = await db.collection('groups').updateOne(
-      { _id: new ObjectId(id) },
-      { $addToSet: { group_members: user_id } }
-    );
+    const result = await db
+      .collection("groups")
+      .updateOne(
+        { _id: new ObjectId(id) },
+        { $addToSet: { group_members: user_id } }
+      );
 
     if (result.modifiedCount === 0) {
-      return { success: false, result: 'User is already a member of this group' };
+      return {
+        success: false,
+        result: "User is already a member of this group",
+      };
     }
 
-    return { success: true, result: 'User added to group successfully' };
+    return { success: true, result: "User added to group successfully" };
   } catch (error) {
     return { success: false, result: error.message };
   }
