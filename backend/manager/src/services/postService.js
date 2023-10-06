@@ -19,18 +19,27 @@ const getPostById = async (id) => {
   }
 };
 
-// TODO: check if user_creator_id
 const createPost = async (postData) => {
   try {
-    const response = await axios.post(`${config.dataGate.url}/posts`, postData);
-    if (response.data.success) {
-      const postId = response.data.result.insertedId;
-      await axios.post(`${config.s3Gate.url}/posts/${postId}/photo`, postData);
-      await axios.put(`${config.dataGate.url}/posts/${postId}`, {
-        post_profile_image: `https://webappproject.s3.us-east-1.amazonaws.com/posts_bucket/${postId}.png`,
-      });
+    const checUserId = await axios.get(
+      `${config.dataGate.url}/users/${postData.user_creator_id}`
+    );
+    if (checUserId.data.success) {
+      const response = await axios.post(
+        `${config.dataGate.url}/posts`,
+        postData
+      );
+      if (response.data.success) {
+        const postId = response.data.result.insertedId;
+        //await axios.post(`${config.s3Gate.url}/posts/${postId}`, postData);
+        await axios.put(`${config.dataGate.url}/posts/${postId}`, {
+          post_image: `https://webappproject.s3.us-east-1.amazonaws.com/posts_bucket/${postId}.png`,
+        });
+      }
+      return response.data;
+    } else {
+      return checUserId.data;
     }
-    return response.data;
   } catch (error) {
     return error;
   }
@@ -38,16 +47,13 @@ const createPost = async (postData) => {
 
 const updatePost = async (id, postData) => {
   try {
-    const {post_profile_image, ...rest} = postData
+    const { post_profile_image, ...rest } = postData;
     const response = await axios.put(
       `${config.dataGate.url}/posts/${id}`,
       rest
     );
-    if (response.status && post_profile_image){
-      await axios.put(
-        `${config.s3Gate.url}/posts/${id}/photo`,
-        postData
-      );
+    if (response.status && post_profile_image) {
+      await axios.put(`${config.s3Gate.url}/posts/${id}/photo`, postData);
     }
     return response.data;
   } catch (error) {
@@ -55,11 +61,10 @@ const updatePost = async (id, postData) => {
   }
 };
 
-// TODO: also deleting each post he creates, every chat he connect to and every group he member of
 const deletePost = async (id) => {
   try {
     const response = await axios.delete(`${config.dataGate.url}/posts/${id}`);
-    if (response.data.success){
+    if (response.data.success) {
       await axios.delete(`${config.s3Gate.url}/posts/${id}/photo`);
     }
     return response.data;

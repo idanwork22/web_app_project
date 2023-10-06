@@ -32,6 +32,7 @@ const updatePost = (db) => async (req, res) => {
     post_content: req.body.post_content,
     likes: req.body.likes,
     comments: req.body.comments,
+    post_image: req.body.post_image,
   };
 
   const filteredPostData = Object.keys(postData).reduce((acc, key) => {
