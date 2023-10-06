@@ -49,6 +49,7 @@ async function isLogin(username, password) {
     "username": username,
     "password": password
   }
+  var isUserLogined=''
 
   const response = await fetch(`${MANGER_API_URL}/users/login`, {
     method: 'POST',
@@ -60,11 +61,13 @@ async function isLogin(username, password) {
     }
     throw new Error('Network response was not ok.');
   }).then(data => {
+    isUserLogined = data.success
     console.log(data);
   })
     .catch(error => {
       console.error('There has been a problem with your fetch operation:', error);
     });
+  return isUserLogined
   // var data = await response.json();
 }
 

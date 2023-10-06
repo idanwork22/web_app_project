@@ -1,33 +1,85 @@
 import postsService from "../services/postsService";
 
-const getAllPosts = (req, res) => {
-  const data = postsService.getAllPosts();
+const getAllPosts = (s3) => async (req, res) => {
+  const data = await postsService.getAllPosts(s3);
   res.json(data);
 };
 
-const getPostById = (req, res) => {
+const getPostById = (s3) => async (req, res) => {
   const id = req.params.id;
-  const data = postsService.getPostById(id);
-  res.json(data ? data : 'NotFound');
+  const contentType = req.body.contentType;
+  if (contentType === "png" || contentType === "mp4") {
+    const data = await postsService.getPostById(s3, id, contentType);
+    res.json(data);
+  } else {
+    res.json({
+      success: false,
+      result:
+        "Incomplete get post data provided, please enter contentType(png/mp4)",
+    });
+  }
 };
 
-const createPost = (req, res) => {
-  const data = req.body.data;
-  const newPost = postsService.createPost({data});
-  res.json(newPost);
+const createPost = (s3) => async (req, res) => {
+  const id = req.params.id;
+  const postData = {
+    post_image: req.body.post_image,
+    contentType: req.body.contentType,
+  };
+  const isAllDataAvailable = Object.values(postData).every(Boolean);
+
+  if (postData.contentType === "png" || postData.contentType === "mp4") {
+    res.json(
+      isAllDataAvailable
+        ? await postsService.createPost(s3, id, postData)
+        : { success: false, result: "Incomplete post data provided." }
+    );
+  } else {
+    res.json({
+      success: false,
+      result:
+        "Incomplete post data provided, please enter contentType(png/mp4)",
+    });
+  }
 };
 
-const updatePost = (req, res) => {
+const updatePost = (s3) => async (req, res) => {
   const id = req.params.id;
-  const data = req.body;
-  const updatedPost = postsService.updatePost(id, data);
-  res.json(updatedPost);
+  const postData = {
+    post_image: req.body.post_image,
+    contentType: req.body.contentType,
+  };
+  const isAllDataAvailable = Object.values(postData).every(Boolean);
+
+  if (postData.contentType === "png" || postData.contentType === "mp4") {
+    res.json(
+      isAllDataAvailable
+        ? await postsService.updatePost(s3, id, postData)
+        : { success: false, result: "Incomplete post data provided." }
+    );
+  } else {
+    res.json({
+      success: false,
+      result:
+        "Incomplete post data provided, please enter contentType(png/mp4)",
+    });
+  }
 };
 
-const deletePost = (req, res) => {
+const deletePost = (s3) => async (req, res) => {
   const id = req.params.id;
-  const deletedPost = postsService.deletePost(id);
-  res.json(deletedPost);
+  const contentType = req.body.contentType;
+
+  if (contentType === "png" || contentType === "mp4") {
+    const deletedPost = await postsService.deletePost(s3, id, contentType);
+    res.json(deletedPost);
+  } else {
+    res.json({
+      success: false,
+      result:
+        "Incomplete get post data provided, please enter contentType(png/mp4)",
+    });
+  }
 };
 
 module.exports = {
