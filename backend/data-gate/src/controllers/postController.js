@@ -29,7 +29,9 @@ const createPost = (db) => async (req, res) => {
 const updatePost = (db) => async (req, res) => {
   const id = req.params.id;
   const postData = {
-    postname: req.body.postname,
+    post_content: req.body.post_content,
+    likes: req.body.likes,
+    comments: req.body.comments,
   };
 
   const filteredPostData = Object.keys(postData).reduce((acc, key) => {
