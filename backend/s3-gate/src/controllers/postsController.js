@@ -68,7 +68,7 @@ const updatePost = (s3) => async (req, res) => {
 
 const deletePost = (s3) => async (req, res) => {
   const id = req.params.id;
-  const contentType = req.body.contentType;
+  const contentType = req.headers.contenttype;
 
   if (contentType === "png" || contentType === "mp4") {
     const deletedPost = await postsService.deletePost(s3, id, contentType);
