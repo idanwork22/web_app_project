@@ -19,8 +19,19 @@ const getGroupById = (db) => async (req, res) => {
 };
 
 const createGroup = (db) => async (req, res) => {
-  const newPost = await groupService.createGroup(req.body);
-  res.json(newPost);
+  const groupData = {
+    user_manager_id: req.body.user_manager_id,
+    group_name: req.body.group_name,
+    group_image: req.body.group_image,
+    group_members: req.body.group_members || [req.body.user_manager_id],
+  };
+
+  const isAllDataAvailable = Object.values(groupData).every(Boolean);
+  res.json(
+    isAllDataAvailable
+      ? await groupService.createGroup(db, groupData)
+      : { success: false, result: "Incomplete post data provided." }
+  );
 };
 
 const updateGroupInfo = (db) => async (req, res) => {

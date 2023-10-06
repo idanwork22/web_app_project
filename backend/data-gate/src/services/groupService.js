@@ -43,29 +43,20 @@ const getGroupById = async (db, id) => {
   }
 };
 
-const createGroup = async (postData) => {
+const createGroup = async (db, groupData) => {
   try {
-    const checUserId = await axios.get(
-      `${config.dataGate.url}/users/${postData.user_creator_id}`
-    );
-    if (checUserId.data.success) {
-      const response = await axios.post(
-        `${config.dataGate.url}/groups`,
-        postData
-      );
-      if (response.data.success) {
-        const groupId = response.data.result.insertedId;
-        await axios.post(`${config.s3Gate.url}/groups/${groupId}`, postData);
-        await axios.put(`${config.dataGate.url}/groups/${groupId}`, {
-          group_image: `https://webappproject.s3.us-east-1.amazonaws.com/groups_bucket/${groupId}.png`,
-        });
-      }
-      return response.data;
+    const { user_manager_id } = groupData;
+    const checkUserExists = await db
+      .collection("users")
+      .findOne({ _id: new ObjectId(user_manager_id) });
+    if (checkUserExists) {
+      const result = await db.collection("groups").insertOne(groupData);
+      return { success: true, result: result };
     } else {
-      return checUserId.data;
+      return { success: false, result: "admin user doesnt exists" };
     }
   } catch (error) {
-    return error;
+    return { success: false, result: error.message };
   }
 };
 
