@@ -13,7 +13,9 @@ const getPostById = (db) => async (req, res) => {
 
 const createPost = (db) => async (req, res) => {
   const postData = {
-    postname: req.body.postname,
+    user_creator_id: req.body.user_creator_id,
+    post_content: req.body.post_content,
+    post_image: req.body.post_image,
   };
 
   const isAllDataAvailable = Object.values(postData).every(Boolean);

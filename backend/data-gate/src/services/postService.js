@@ -34,9 +34,8 @@ const createPost = async (db, postData) => {
   try {
     postData = {
       ...postData,
-      post_creation_time: new Date(getTimestamp()),
-      friends: [],
-      is_online: true,
+      likes: [],
+      comments: [],
     };
 
     const result = await db.collection("posts").insertOne(postData);
