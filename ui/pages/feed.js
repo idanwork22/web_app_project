@@ -155,6 +155,7 @@ likeBtns();
 const updateDoms = () => {
   likeBtns();
   postComment();
+  prepareDeleteAndUpdateOfPost();
 }
 
 
@@ -199,6 +200,40 @@ const createNewPostButton = document.querySelector(".postButton");
 const createPostModal = new bootstrap.Modal('#createPostModal');
 const timeline = document.querySelector(".timeline");
 
+const prepareDeleteAndUpdateOfPost = () =>{
+  const deletePostLinks = Array.from(document.querySelectorAll('.deletePost'));
+  const editPostBtns = document.querySelectorAll('.editPostButton');
+  const editPostTexts = document.querySelectorAll('.editPostTextArea');
+  const postContents = document.querySelectorAll('.post-content');
+
+  deletePostLinks.forEach((deletePostLink, i) => {
+    deletePostLink.addEventListener("click", () => {
+      deletePost(deletePostLink);
+    });
+  });
+
+  editPostBtns.forEach((editPostBtn, i) => {
+    editPostBtn.addEventListener("click", () => {
+      console.log(postContents[i])
+      editPost(editPostTexts[i], postContents[i], i);
+    });
+  });
+}
+const deletePost = (deletePostLink) => {
+  deletePostLink.closest('div.post-div').remove();
+}
+
+const editPost = (editPostText, oldPostContent, i) => {
+  oldPostContent.innerHTML = `${editPostText.value}`;
+  console.log(i);
+  //oldPostContent.innerHTML = `${editPostText.value}`
+  //editPostBtn.closest('.post-content').innerHTML = `${editPostText.value}`;
+}
+
+//prepate post functionality
+prepareDeleteAndUpdateOfPost();
+
+
 createNewPostButton.addEventListener("click", () => {
   createNewPost(newPostTextArea.value);
 });
@@ -224,10 +259,11 @@ const createNewPost = (text) => {
       reader.readAsDataURL(newFile);
     }
   }
+  prepareDeleteAndUpdateOfPost();
 }
 
 var createPostWithoutImage = (text, newPost, author) => {
-  newPost.className = "bg-white p-4 rounded shadow mt-3";
+  newPost.className = "bg-white p-4 rounded shadow mt-3 post-div";
   newPost.innerHTML = `
   <!-- author -->
             <div class="d-flex justify-content-between">
@@ -252,7 +288,10 @@ var createPostWithoutImage = (text, newPost, author) => {
                         justify-content-around
                         align-items-center
                         fs-7
-                      " href="#">
+                        editPost
+                      " 
+                      data-bs-toggle="modal" data-bs-target="#updatePostModal" 
+                      href="#">
                     Edit Post</a>
                 </li>
                 <li class="d-flex align-items-center">
@@ -262,16 +301,67 @@ var createPostWithoutImage = (text, newPost, author) => {
                         justify-content-around
                         align-items-center
                         fs-7
+                        deletePost
                       " href="#">
                     Delete Post</a>
                 </li>
               </ul>
             </div>
+            <!-- create modal -->
+            <div class="modal fade" id="editPostModal1" tabindex="-1" aria-labelledby="editPostModal1Label" aria-hidden="true"
+              data-bs-backdrop="false">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <!-- head -->
+                  <div class="modal-header align-items-center">
+                    <h5 class="text-dark text-center w-100 m-0" id="exampleModalLabel">
+                      Edit Post
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <!-- body -->
+                  <div class="modal-body">
+                    <div class="my-1 p-1">
+                      <div class="d-flex flex-column">
+                        <!-- name -->
+                        <div class="d-flex align-items-center">
+                          <div class="p-2">
+                            <img src="https://source.unsplash.com/collection/happy-people" alt="from fb"
+                              class="rounded-circle" style="
+                                  width: 38px;
+                                  height: 38px;
+                                  object-fit: cover;
+                                " />
+                          </div>
+                          <div>
+                            <p class="m-0 fw-bold">John</p>
+
+                          </div>
+                        </div>
+                        <!-- text -->
+                        <div>
+                          <textarea cols="30" rows="5" class="bg-gray form-control border-0 editPostTextArea"></textarea>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- end -->
+                  </div>
+                  <!-- footer -->
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary w-100 editPostButton">
+                      Post
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr />
             <!-- post content -->
             <div class="mt-3">
               <!-- content -->
               <div>
-                <p>
+                <p class="post-content">
                   ${text}
                 </p>
               </div>
@@ -375,7 +465,7 @@ var createPostWithoutImage = (text, newPost, author) => {
 
 var createPostWithImage = (text, newPost, author) => {
   var img = URL.createObjectURL(newFile);
-  newPost.className = "bg-white p-4 rounded shadow mt-3";
+  newPost.className = "bg-white p-4 rounded shadow mt-3 post-div";
   newPost.innerHTML = `
   <!-- author -->
             <div class="d-flex justify-content-between">
@@ -400,7 +490,10 @@ var createPostWithImage = (text, newPost, author) => {
                         justify-content-around
                         align-items-center
                         fs-7
-                      " href="#">
+                        editPost
+                      " 
+                      data-bs-toggle="modal" data-bs-target="#updatePostModal" 
+                      href="#">
                     Edit Post</a>
                 </li>
                 <li class="d-flex align-items-center">
@@ -410,16 +503,67 @@ var createPostWithImage = (text, newPost, author) => {
                         justify-content-around
                         align-items-center
                         fs-7
+                        deletePost
                       " href="#">
                     Delete Post</a>
                 </li>
               </ul>
             </div>
+            <!-- create modal -->
+            <div class="modal fade" id="editPostModal" tabindex="-1" aria-labelledby="editPostModalLabel" aria-hidden="true"
+              data-bs-backdrop="false">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <!-- head -->
+                  <div class="modal-header align-items-center">
+                    <h5 class="text-dark text-center w-100 m-0" id="exampleModalLabel">
+                      Edit Post
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <!-- body -->
+                  <div class="modal-body">
+                    <div class="my-1 p-1">
+                      <div class="d-flex flex-column">
+                        <!-- name -->
+                        <div class="d-flex align-items-center">
+                          <div class="p-2">
+                            <img src="https://source.unsplash.com/collection/happy-people" alt="from fb"
+                              class="rounded-circle" style="
+                                  width: 38px;
+                                  height: 38px;
+                                  object-fit: cover;
+                                " />
+                          </div>
+                          <div>
+                            <p class="m-0 fw-bold">John</p>
+
+                          </div>
+                        </div>
+                        <!-- text -->
+                        <div>
+                          <textarea cols="30" rows="5" class="bg-gray form-control border-0 editPostTextArea"></textarea>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- end -->
+                  </div>
+                  <!-- footer -->
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary w-100 editPostButton">
+                      Post
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr />
             <!-- post content -->
             <div class="mt-3">
               <!-- content -->
               <div>
-                <p>
+                <p class="post-content">
                   ${text}
                 </p>
                 <img src="${img}" alt="post image" class="img-fluid rounded" />
@@ -525,7 +669,7 @@ var createPostWithImage = (text, newPost, author) => {
 
 var createPostWithVideo = (text, newPost, author) => {
   var video = URL.createObjectURL(newFile);
-  newPost.className = "bg-white p-4 rounded shadow mt-3";
+  newPost.className = "bg-white p-4 rounded shadow mt-3 post-div";
   newPost.innerHTML = `
   <!-- author -->
             <div class="d-flex justify-content-between">
@@ -550,7 +694,10 @@ var createPostWithVideo = (text, newPost, author) => {
                         justify-content-around
                         align-items-center
                         fs-7
-                      " href="#">
+                        editPost
+                      " 
+                      data-bs-toggle="modal" data-bs-target="#updatePostModal" 
+                      href="#">
                     Edit Post</a>
                 </li>
                 <li class="d-flex align-items-center">
@@ -560,16 +707,67 @@ var createPostWithVideo = (text, newPost, author) => {
                         justify-content-around
                         align-items-center
                         fs-7
+                        deletePost
                       " href="#">
                     Delete Post</a>
                 </li>
               </ul>
             </div>
+            <!-- create modal -->
+            <div class="modal fade" id="editPostModal" tabindex="-1" aria-labelledby="editPostModalLabel" aria-hidden="true"
+              data-bs-backdrop="false">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <!-- head -->
+                  <div class="modal-header align-items-center">
+                    <h5 class="text-dark text-center w-100 m-0" id="exampleModalLabel">
+                      Edit Post
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <!-- body -->
+                  <div class="modal-body">
+                    <div class="my-1 p-1">
+                      <div class="d-flex flex-column">
+                        <!-- name -->
+                        <div class="d-flex align-items-center">
+                          <div class="p-2">
+                            <img src="https://source.unsplash.com/collection/happy-people" alt="from fb"
+                              class="rounded-circle" style="
+                                  width: 38px;
+                                  height: 38px;
+                                  object-fit: cover;
+                                " />
+                          </div>
+                          <div>
+                            <p class="m-0 fw-bold">John</p>
+
+                          </div>
+                        </div>
+                        <!-- text -->
+                        <div>
+                          <textarea cols="30" rows="5" class="bg-gray form-control border-0 editPostTextArea"></textarea>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- end -->
+                  </div>
+                  <!-- footer -->
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary w-100 editPostButton">
+                      Post
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr />
             <!-- post content -->
             <div class="mt-3">
               <!-- content -->
               <div>
-                <p>
+                <p class="post-content">
                   ${text}
                 </p>
                 <video alt="post image" class="img-fluid rounded" controls>
