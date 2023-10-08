@@ -1,9 +1,10 @@
 import express from "express";
-import userRoutes from "./routes/userRoutes";
 import config from "./config/config";
 import { connect } from "./db.js";
+import cors from "cors";
 import postRoutes from "./routes/postRoutes";
-import cors from 'cors'
+import userRoutes from "./routes/userRoutes";
+import groupRoutes from "./routes/groupRouter";
 
 const startServer = async () => {
   const db = await connect();
@@ -14,6 +15,7 @@ const startServer = async () => {
 
   app.use("/users", userRoutes(db)); // Routes
   app.use("/posts", postRoutes(db)); // Routes
+  app.use("/groups", groupRoutes(db)); // Routes
 
   app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "http://localhost:8080"); // Replace with your actual frontend URL
