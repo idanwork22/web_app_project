@@ -20,7 +20,7 @@ const getAllGroups = async (s3) => {
 const getGroupById = async (s3, id) => {
   try {
     const key = `${params.Prefix}${id}.png`;
-    const data = await s3
+    await s3
       .getObject({ Bucket: params.Bucket, Key: key })
       .promise();
     return { success: true, result: `${config.s3Browser.previewUrl}/${key}` };
@@ -38,7 +38,7 @@ const createGroup = async (s3, id, group_image) => {
       Body: fileContent,
       ContentType: "png",
     };
-    await s3.upload(newPost).promise();
+    await s3.upload(newGroup).promise();
     return {
       success: true,
       result: `File uploaded successfully - ${id}.png`,

@@ -9,38 +9,33 @@ const getGroupById = (s3) => async (req, res) => {
   const id = req.params.id;
   const data = await groupsService.getGroupById(s3, id);
   res.json(data);
-  } 
-;
+};
 
 const createGroup = (s3) => async (req, res) => {
   const id = req.params.id;
-  const postData = {
-    gruop_image: req.body.gruop_image,
-  };
-  const isAllDataAvailable = Object.values(postData).every(Boolean);
+  const gruop_image = req.body.gruop_image;
+
   res.json(
-    isAllDataAvailable
-      ? await groupsService.createGroup(s3, id, postData)
+    gruop_image
+      ? await groupsService.createGroup(s3, id, gruop_image)
       : { success: false, result: "Incomplete post data provided." }
   );
 };
 
 const updateGroupInfo = (s3) => async (req, res) => {
   const id = req.params.id;
-  const postData = {
-    group_image: req.body.group_image,
-  };
-  const isAllDataAvailable = Object.values(postData).every(Boolean);
+  const group_image = req.body.group_image;
+
   res.json(
-      isAllDataAvailable
-        ? await groupsService.updateGroupInfo(s3, id, postData)
-        : { success: false, result: "Incomplete post data provided." }
-    );
+    group_image
+      ? await groupsService.updateGroupInfo(s3, id, group_image)
+      : { success: false, result: "Incomplete post data provided." }
+  );
 };
 
 const deleteGroup = (s3) => async (req, res) => {
   const id = req.params.id;
-  const deletedGrup = await groupsService.deleteGroup(s3, id, contentType);
+  const deletedGrup = await groupsService.deleteGroup(s3, id);
   res.json(deletedGrup);
 };
 
