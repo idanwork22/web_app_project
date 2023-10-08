@@ -173,6 +173,75 @@ paths:
       responses:
         "200":
           description: Successful response
+  /groups:
+    get:
+      summary: Get all groups
+      tags:
+        - groups
+      responses:
+        "200":
+          description: Successful response
+
+    post:
+      summary: Create a new groups
+      tags:
+        - groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/group"
+      responses:
+        "200":
+          description: Successful response
+
+  /groups/{id}:
+    get:
+      summary: Get group by ID
+      tags:
+        - groups
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+
+    put:
+      summary: Update group by ID
+      tags:
+        - groups
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/group"
+      responses:
+        "200":
+          description: Successful response
+
+    delete:
+      summary: Delete group by ID
+      tags:
+        - groups
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
 
 
 components:
@@ -256,3 +325,20 @@ components:
           type: string
           required: true
           example: "mp4/png"
+    group:
+      type: object
+      properties:
+        user_manager_id:
+          type: string
+          required: true
+        group_name:
+          type: string
+          required: true
+        group_image:
+          type: string
+          required: true
+        group_members:
+          type: array
+          items:
+            type: string
+          required: true
