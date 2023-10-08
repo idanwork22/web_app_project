@@ -68,16 +68,7 @@ const deleteGroup = async (id) => {
   try {
     const response = await axios.delete(`${config.dataGate.url}/groups/${id}`);
     if (response.data.success) {
-      await axios.delete(`${config.s3Gate.url}/groups/${id}`, {
-        headers: {
-          contentType: "png",
-        },
-      });
-      await axios.delete(`${config.s3Gate.url}/groups/${id}`, {
-        headers: {
-          contentType: "mp4",
-        },
-      });
+      await axios.delete(`${config.s3Gate.url}/groups/${id}`);
     }
     return response.data;
   } catch (error) {
