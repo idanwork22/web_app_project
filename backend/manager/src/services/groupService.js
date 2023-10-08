@@ -76,10 +76,34 @@ const deleteGroup = async (id) => {
   }
 };
 
+const addUserToGroup = async (id, user_id) => {
+  try {
+    const response = await axios.post(
+      `${config.dataGate.url}/groups/${id}/user/${user_id}`
+    );
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+const deleteUserFromGroup = async (id, user_id) => {
+  try {
+    const response = await axios.delete(
+      `${config.dataGate.url}/groups/${id}/user/${user_id}`
+    );
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
+
 module.exports = {
   getAllGroups,
   getGroupById,
   createGroup,
   updateGroup,
   deleteGroup,
+  addUserToGroup,
+  deleteUserFromGroup,
 };

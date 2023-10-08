@@ -25,10 +25,26 @@ const deleteGroup = async (req, res) => {
   res.json(deletedGroup);
 };
 
+const addUserToGroup = async (req, res) => {
+  const group_id = req.params.id;
+  const user_id = req.params.user_id;
+  const result = await groupService.addUserToGroup(group_id, user_id);
+  res.json(result);
+};
+
+const deleteUserFromGroup = async (req, res) => {
+  const group_id = req.params.id;
+  const user_id = req.params.user_id;
+  const result = await groupService.deleteUserFromGroup(group_id, user_id);
+  res.json(result);
+};
+
 module.exports = {
   getAllGroups,
   getGroupById,
   createGroup,
   updateGroup,
   deleteGroup,
+  addUserToGroup,
+  deleteUserFromGroup,
 };

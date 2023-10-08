@@ -242,6 +242,43 @@ paths:
       responses:
         "200":
           description: Successful response
+  /groups/{id}/user/{user_id}:
+    post:
+      summary: Add member to group
+      tags:
+        - groups
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+    delete:
+      summary: Remove member from group
+      tags:
+        - groups
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
 
 
 components:
