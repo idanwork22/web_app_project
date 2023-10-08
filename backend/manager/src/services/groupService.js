@@ -22,7 +22,7 @@ const getGroupById = async (id) => {
 const createGroup = async (groupData) => {
   try {
     const checUserId = await axios.get(
-      `${config.dataGate.url}/users/${groupData.user_creator_id}`
+      `${config.dataGate.url}/users/${groupData.user_manager_id}`
     );
     if (checUserId.data.success) {
       const response = await axios.post(
@@ -33,7 +33,7 @@ const createGroup = async (groupData) => {
         const groupId = response.data.result.insertedId;
         await axios.post(`${config.s3Gate.url}/groups/${groupId}`, groupData);
         await axios.put(`${config.dataGate.url}/groups/${groupId}`, {
-          group_image: `https://webappproject.s3.us-east-1.amazonaws.com/groups_bucket/${groupId}.${groupData.contentType}`,
+          group_image: `https://webappproject.s3.us-east-1.amazonaws.com/groups_bucket/${groupId}.png`,
         });
       }
       return response.data;

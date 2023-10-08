@@ -11,16 +11,8 @@ const getGroupById = async (req, res) => {
 };
 
 const createGroup = async (req, res) => {
-  if (req.body.contentType !== "mp4" && req.body.contentType !== "png") {
-    res.json({
-      success: false,
-      result:
-        "Incomplete group data provided, please enter contentType(png/mp4)",
-    });
-  } else {
-    const newGroup = await groupService.createGroup(req.body);
-    res.json(newGroup);
-  }
+  const newGroup = await groupService.createGroup(req.body);
+  res.json(newGroup);
 };
 
 const updateGroup = async (req, res) => {
@@ -35,7 +27,10 @@ const updateGroup = async (req, res) => {
         "Incomplete group data provided, please enter contentType(png/mp4)",
     });
   } else {
-    const updatedGroup = await groupService.updateGroup(req.params.id, req.body);
+    const updatedGroup = await groupService.updateGroup(
+      req.params.id,
+      req.body
+    );
     res.json(updatedGroup);
   }
 };

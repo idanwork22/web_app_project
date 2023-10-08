@@ -13,11 +13,11 @@ const getGroupById = (s3) => async (req, res) => {
 
 const createGroup = (s3) => async (req, res) => {
   const id = req.params.id;
-  const gruop_image = req.body.gruop_image;
+  const group_image = req.body.group_image;
 
   res.json(
-    gruop_image
-      ? await groupsService.createGroup(s3, id, gruop_image)
+    group_image
+      ? await groupsService.createGroup(s3, id, group_image)
       : { success: false, result: "Incomplete post data provided." }
   );
 };
