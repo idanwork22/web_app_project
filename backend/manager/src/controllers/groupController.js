@@ -16,23 +16,8 @@ const createGroup = async (req, res) => {
 };
 
 const updateGroup = async (req, res) => {
-  if (
-    req.body.group_image &&
-    req.body.contentType != "mp4" &&
-    req.body.contentType != "png"
-  ) {
-    res.json({
-      success: false,
-      result:
-        "Incomplete group data provided, please enter contentType(png/mp4)",
-    });
-  } else {
-    const updatedGroup = await groupService.updateGroup(
-      req.params.id,
-      req.body
-    );
-    res.json(updatedGroup);
-  }
+  const updatedGroup = await groupService.updateGroup(req.params.id, req.body);
+  res.json(updatedGroup);
 };
 
 const deleteGroup = async (req, res) => {

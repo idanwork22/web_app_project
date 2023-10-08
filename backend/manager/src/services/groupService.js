@@ -47,28 +47,15 @@ const createGroup = async (groupData) => {
 
 const updateGroup = async (id, groupData) => {
   try {
-    const { group_image, contentType, ...rest } = groupData;
+    const { group_image, ...rest } = groupData;
     const response = await axios.put(
       `${config.dataGate.url}/groups/${id}`,
       rest
     );
     if (response.data.success && group_image) {
-      await axios.delete(`${config.s3Gate.url}/groups/${id}`, {
-        headers: {
-          contentType: "png",
-        },
-      });
-      await axios.delete(`${config.s3Gate.url}/groups/${id}`, {
-        headers: {
-          contentType: "mp4",
-        },
-      });
+      await axios.delete(`${config.s3Gate.url}/groups/${id}`);
       await axios.post(`${config.s3Gate.url}/groups/${id}`, {
         group_image,
-        contentType,
-      });
-      await axios.put(`${config.dataGate.url}/groups/${id}`, {
-        group_image: `https://webappproject.s3.us-east-1.amazonaws.com/groups_bucket/${id}.${contentType}`,
       });
     }
     return response.data;

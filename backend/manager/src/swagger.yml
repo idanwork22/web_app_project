@@ -224,7 +224,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/group"
+              $ref: "#/components/schemas/updateGroup"
       responses:
         "200":
           description: Successful response
@@ -341,4 +341,16 @@ components:
           type: array
           items:
             type: string
+          required: true
+    updateGroup:
+      type: object
+      properties:
+        user_manager_id:
+          type: string
+          required: true
+        group_name:
+          type: string
+          required: true
+        group_image:
+          type: string
           required: true
