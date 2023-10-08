@@ -7,7 +7,7 @@ const getAllGroups = (s3) => async (req, res) => {
 
 const getGroupById = (s3) => async (req, res) => {
   const id = req.params.id;
-  const data = await groupsService.getGroupById(s3, id, contentType);
+  const data = await groupsService.getGroupById(s3, id);
   res.json(data);
   } 
 ;
