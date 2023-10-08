@@ -67,7 +67,7 @@ const updateGroupInfo = async (s3, id, group_image) => {
     const fileContent = Buffer.from(group_image, "base64");
     const newPhoto = {
       Bucket: params.Bucket,
-      Key: `${params.Prefix}${id}.$png`,
+      Key: `${params.Prefix}${id}.png`,
       Body: fileContent,
       ContentType: "png", // Set the content type appropriately
     };
