@@ -1,28 +1,45 @@
+const MANGER_HOST = `127.0.0.1`;
+const MANGER_PORT = 8001;
+const MANGER_API_URL = `http://${MANGER_HOST}:${MANGER_PORT}`;
 
+
+//check if user is auth else thro him to login page
+const LOGIN_PAGE = "./index.html"
+async function isLogin(username, password) {
+  var headers = {
+    'Content-Type': 'application/json' 
+  }
+  var body = {
+    "username": username,
+    "password": password
+  }
+  var res = await fetch(`${MANGER_API_URL}/users/login`, {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(body)
+  });
+  var data = await res.json();
+  return data.success
+}
+
+var username = localStorage.getItem("username");
+var password = localStorage.getItem("password");
+
+isLogin(username, password).then(isloginSuccess=>{
+  isloginSuccess ? null : window.location.href = LOGIN_PAGE;
+}) 
+
+const logoutBtn = document.querySelector('.logout');
+logoutBtn.addEventListener("click",()=>{
+  localStorage.removeItem("username");
+  localStorage.removeItem("password");  
+})
 
 // popover
 var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
 var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
   return new bootstrap.Popover(popoverTriggerEl);
 });
-
-// Gender Select
-if (window.location.pathname === "/") {
-  const radioBtn1 = document.querySelector("#flexRadioDefault1");
-  const radioBtn2 = document.querySelector("#flexRadioDefault2");
-  const radioBtn3 = document.querySelector("#flexRadioDefault3");
-  const genderSelect = document.querySelector("#genderSelect");
-
-  radioBtn1.addEventListener("change", () => {
-    genderSelect.classList.add("d-none");
-  });
-  radioBtn2.addEventListener("change", () => {
-    genderSelect.classList.add("d-none");
-  });
-  radioBtn3.addEventListener("change", () => {
-    genderSelect.classList.remove("d-none");
-  });
-}
 
 
 const getCurrentDateTime = () => {
@@ -96,8 +113,9 @@ var sendNewMessage = (text) => {
   // Append the new message to the messages list
   messagesObj[0].appendChild(newMessageObj);
 }
-
 chat();
+
+
 //comments post btn
 function postComment() { //TODO: Fix btn allways up & disable send empty comments
   var allComments = document.querySelectorAll('.comments');
